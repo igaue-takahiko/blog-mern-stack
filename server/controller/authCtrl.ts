@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import Users from '../models/userModel';
 import bcrypt from 'bcrypt';
 import { generateAccessToken } from '../config/generateToken';
+import sendMail from '../config/sendMail';
+import { validateEmail } from '../middleware/valid';
+
+const CLIENT_URL = `${process.env.BASE_URL}`
 
 const authCtrl = {
   register: async (req: Request, res: Response) => {
@@ -18,13 +22,13 @@ const authCtrl = {
       const newUser = { name, account, password: passwordHash }
 
       const active_token = generateAccessToken({ newUser })
+      const url = `${CLIENT_URL}/active/${active_token}`
 
-      res.json({
-        status: 'OK',
-        msg: '正常に登録が出来ました。',
-        data: newUser,
-        active_token,
-      })
+      if (validateEmail(account)) {
+        sendMail(account, url, 'あなたのメールアドレスを確認してください。')
+        return res.json({ msg: "Success! Please check your email." })
+      }
+
     } catch (error) {
       return res.status(500).json({ msg: error.message })
     }
