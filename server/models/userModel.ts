@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [ true, "パスワードの入力は必須です。" ],
-    trim: true
   },
   avatar: {
     type: String,
