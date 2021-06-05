@@ -1,21 +1,22 @@
 import mongoose from 'mongoose';
+import { User } from '../config/interface';
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [ true, '名前の入力は必須です。' ],
+    required: [true, '名前の入力は必須です。'],
     trim: true,
-    maxLength: [ 20, '名前は２０文字以内でお願いします。' ]
+    maxLength: [20, '名前は２０文字以内でお願いします。']
   },
   account: {
     type: String,
-    required: [ true, 'メールアドレスまたは電話番号を入力してください。' ],
+    required: [true, 'メールアドレスまたは電話番号を入力してください。'],
     trim: true,
     unique: true
   },
   password: {
     type: String,
-    required: [ true, "パスワードの入力は必須です。" ],
+    required: [true, "パスワードの入力は必須です。"],
   },
   avatar: {
     type: String,
@@ -27,10 +28,10 @@ const userSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    default: 'normal' // fast
+    default: 'register' // login
   }
-},{
+}, {
   timestamps: true
 })
 
-export default mongoose.model('User', userSchema)
+export default mongoose.model<User>('User', userSchema)
