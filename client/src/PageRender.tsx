@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import { NotFound } from './components/global';
-import { Params } from './utils/types';
+import { Params } from './utils/globalTypes';
 
 const generatePage = (name: string) => {
   const component = () => require(`./pages/${name}`).default
