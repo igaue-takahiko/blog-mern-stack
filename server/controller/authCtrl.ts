@@ -39,7 +39,7 @@ const authCtrl = {
         return res.json({ msg: "登録に出来ました。 SMSを確認してください。" })
       }
 
-    } catch (error) {
+    } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
   },
@@ -55,22 +55,19 @@ const authCtrl = {
         return res.status(400).json({ msg: "無効な認証です。" })
       }
 
-      const user = new Users(newUser)
-
-      await user.save()
-
-      res.json({ msg: "アカウントが有効化されました！" })
-    } catch (error) {
-      let errorMessage
-
-      if (error.code === 11000) {
-        errorMessage = Object.keys(error.keyValue)[0] + " already exists."
-      } else {
-        let name = Object.keys(error.errors)[0]
-        errorMessage = error.errors[`${name}`].message
+      const user = await Users.findOne({ account: newUser.account })
+      if (user) {
+        return res.status(400).json({ msg: "アカウントはすでに存在しています。" })
       }
 
-      return res.status(500).json({ msg: errorMessage })
+      const new_user = new Users(newUser)
+
+      await new_user.save()
+
+      res.json({ msg: "アカウントが有効化されました！" })
+    } catch (error: any) {
+
+      return res.status(500).json({ msg: error.message })
     }
   },
   login: async (req: Request, res: Response) => {
@@ -92,7 +89,7 @@ const authCtrl = {
       res.clearCookie("refresh_token", { path: `/api/refresh_token` })
 
       return res.json({ msg: "ログアウトしました!" })
-    } catch (error) {
+    } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
   },
@@ -116,7 +113,7 @@ const authCtrl = {
       const access_token = generateAccessToken({ id: user._id })
 
       res.json({ access_token })
-    } catch (error) {
+    } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
   }

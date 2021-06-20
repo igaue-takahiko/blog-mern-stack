@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 import PageRender from "./PageRender";
 import { Header, Footer } from "./components/global";
-import { Alert } from "./components/alert";
+import { Alert } from "./components/alert/Alert";
 
 const App: React.FC = () => {
   return (

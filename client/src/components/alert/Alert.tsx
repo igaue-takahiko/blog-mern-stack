@@ -5,7 +5,7 @@ import { RootStore } from "../../utils/globalTypes";
 import Loading from "./Loading";
 import Toast from "./Toast";
 
-const Alert: React.FC = () => {
+export const Alert: React.FC = () => {
   const { alert } = useSelector((state: RootStore) => state);
   return (
     <div>
@@ -20,4 +20,9 @@ const Alert: React.FC = () => {
   );
 };
 
-export default Alert;
+export const showErrorMessage = (msg: string) => {
+  return <div className="errorMsg">{msg}</div>;
+};
+export const showSuccessMessage = (msg: string) => {
+  return <div className="successMsg">{msg}</div>;
+};
