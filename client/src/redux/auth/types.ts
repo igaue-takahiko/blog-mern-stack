@@ -1,10 +1,10 @@
-import { User } from '../../utils/globalTypes';
+import { IUser } from '../../utils/globalTypes';
 
 export const AUTH = 'AUTH'
 
 export interface Auth {
   token?: string
-  user?: User
+  user?: IUser
 }
 
 export interface AuthType {

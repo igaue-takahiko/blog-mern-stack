@@ -1,6 +1,7 @@
 import { AUTH, Auth, AuthType } from "./types";
+import initialState from '../store/initialState';
 
-const authReducer = (state: Auth = {}, action: AuthType): Auth => {
+const authReducer = (state: Auth = initialState.auth, action: AuthType): Auth => {
   switch (action.type) {
     case AUTH:
       return action.payload;

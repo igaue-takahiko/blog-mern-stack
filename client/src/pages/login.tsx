@@ -10,7 +10,7 @@ const Login: React.FC = () => {
     <div className="auth_page">
       <div className="auth_box">
         <h3 className="text-uppercase text-center mb-4">Login</h3>
-        {sms ? <LoginPass /> : <LoginSMS />}
+        {sms ?  <LoginSMS /> : <LoginPass />}
         <small className="row my-2 text-primary" style={{ cursor: "pointer" }}>
           <span className="col-md-6">
             <Link to="/forget_password" className="col-6">
