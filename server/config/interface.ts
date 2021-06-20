@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface User extends Document {
+export interface IUser extends Document {
   name: string
   account: string
   password: string
@@ -10,15 +10,15 @@ export interface User extends Document {
   _doc: object
 }
 
-export interface NewUser {
+export interface INewUser {
   name: string
   account: string
   password: string
 }
 
-export interface DecodedToken {
+export interface IDecodedToken {
   id?: string
-  newUser?: NewUser
+  newUser?: INewUser
   iat: number
   exp: number
 }

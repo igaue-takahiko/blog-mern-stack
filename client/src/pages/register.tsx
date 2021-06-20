@@ -1,11 +1,23 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
+
+import { RegisterForm } from "../components/auth";
 
 const Register: React.FC = () => {
   return (
-    <div>
-      register
+    <div className="auth_page">
+      <div className="auth_box">
+        <h3 className="text-uppercase text-center mb-4">Register</h3>
+        <RegisterForm />
+        <p className="mt-2">
+          {"アカウントをお持ちの方は"}
+          <Link to="/login" style={{ color: "crimson" }}>
+            こちら
+          </Link>
+        </p>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

@@ -17,6 +17,11 @@ export interface IUserLogin {
   password: string
 }
 
+export interface IUserRegister extends IUserLogin {
+  name: string
+  cf_password: string
+}
+
 export interface IParams {
   page: string
   slug: string

@@ -2,12 +2,12 @@ import { IUser } from '../../utils/globalTypes';
 
 export const AUTH = 'AUTH'
 
-export interface Auth {
+export interface IAuth {
   token?: string
   user?: IUser
 }
 
-export interface AuthType {
+export interface IAuthType {
   type: typeof AUTH
-  payload: Auth
+  payload: IAuth
 }

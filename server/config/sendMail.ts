@@ -42,7 +42,7 @@ const sendEmail = async (to: string, url: string, txt: string) => {
       html: `
         <div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
           <h2 style="text-align: center; text-transform: uppercase;color: teal;">ようこそ T.I-Blogへ！</h2>
-          <p>おめでとうございます。これで、T.I-Blogを使い始める準備がほぼ整いました。
+          <p>おめでとうございます。これで、T.I-Blogを使い始める準備がほぼ整いました。</br>
               下のボタンをクリックして、あなたのメールアドレスを認証してください。
           </p>
 
@@ -50,7 +50,7 @@ const sendEmail = async (to: string, url: string, txt: string) => {
             ${txt}
           </a>
 
-          <p>何らかの理由でボタンが機能しない場合は、下のリンクをクリックすることもできます。</p>
+          <p>何らかの理由でボタンが機能しない場合は、下のリンクをクリックすることでも登録できます。</p>
 
           <div>${url}</div>
         </div>

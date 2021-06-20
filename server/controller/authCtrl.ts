@@ -7,7 +7,7 @@ import { generateAccessToken, generateActiveToken, generateRefreshToken } from '
 import { validateEmail, validPhone } from '../middleware/valid';
 import sendMail from '../config/sendMail';
 import { sendSms } from '../config/sendSMS';
-import { DecodedToken, User } from '../config/interface';
+import { IDecodedToken, IUser } from '../config/interface';
 
 const CLIENT_URL = `${process.env.BASE_URL}`
 
@@ -31,12 +31,12 @@ const authCtrl = {
 
       if (validateEmail(account)) {
         sendMail(account, url, 'あなたのメールアドレスを確認してください。')
-        return res.json({ msg: "Success! Please check your email." })
+        return res.json({ msg: "登録に出来ました。 メールを確認してください。" })
       }
 
       if (validPhone(account)) {
         sendSms(account, url, '電話番号の確認です。')
-        return res.json({ msg: "Success! Please check phone." })
+        return res.json({ msg: "登録に出来ました。 SMSを確認してください。" })
       }
 
     } catch (error) {
@@ -47,7 +47,7 @@ const authCtrl = {
     try {
       const { active_token } = req.body
 
-      const decoded = <DecodedToken>jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
+      const decoded = <IDecodedToken>jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
 
       const { newUser } = decoded
 
@@ -103,7 +103,7 @@ const authCtrl = {
         return res.status(400).json({ msg: "今すぐログインしてください！" })
       }
 
-      const decoded = <DecodedToken>jwt.verify(rf_token, `${process.env.REFRESH_TOKEN_SECRET}`)
+      const decoded = <IDecodedToken>jwt.verify(rf_token, `${process.env.REFRESH_TOKEN_SECRET}`)
       if (!decoded.id) {
         return res.status(400).json({ msg: "今すぐログインしてください！" })
       }
@@ -122,7 +122,7 @@ const authCtrl = {
   }
 }
 
-const loginUser = async (user: User, password: string, res: Response) => {
+const loginUser = async (user: IUser, password: string, res: Response) => {
   const isMatch = await bcrypt.compare(password, user.password)
   if (!isMatch) {
     return res.status(400).json({ msg: "パスワードが正しくありません。" })
