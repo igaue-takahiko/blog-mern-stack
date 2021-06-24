@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { AUTH, IAuthType } from './types';
 import { ALERT, IAlertType } from '../alert/types';
-import { postAPI } from '../../utils/fetchData';
+import { postAPI, getAPI } from '../../utils/fetchData';
 import { IUserLogin, IUserRegister } from '../../utils/globalTypes';
 import { validRegister } from '../../utils/valid';
 
@@ -10,15 +10,10 @@ export const login = (userLogin: IUserLogin) => async (dispatch: Dispatch<IAuthT
     dispatch({ type: ALERT, payload: { loading: true } })
     const res = await postAPI('login', userLogin)
 
-    dispatch({
-      type: AUTH,
-      payload: {
-        token: res.data.access_token,
-        user: res.data.user
-      }
-    })
+    dispatch({ type: AUTH, payload: res.data})
 
-    dispatch({ type: ALERT, payload: { success: "ログイン出来ました！" } })
+    dispatch({ type: ALERT, payload: { success: res.data.msg } })
+    localStorage.setItem('logged', "t.i-blog")
   } catch (error: any) {
     dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
   }
@@ -40,4 +35,33 @@ export const register = (userRegister: IUserRegister) => async (dispatch: Dispat
   } catch (error: any) {
     dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
   }
+}
+
+export const refreshToken = () => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+  const logged = localStorage.getItem('logged')
+  if (logged !== "t.i-blog") {
+    return
+  }
+
+  try {
+    dispatch({ type: ALERT, payload: { loading: true } })
+    const res = await getAPI('refresh_token')
+
+    dispatch({ type: AUTH, payload: res.data })
+
+    dispatch({ type: ALERT, payload: {} })
+  } catch (error) {
+    dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+  }
+}
+
+export const logout = () => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+  try {
+    localStorage.removeItem("logged")
+    await getAPI('logout')
+    window.location.href = "/"
+  } catch (error) {
+    dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+  }
+
 }

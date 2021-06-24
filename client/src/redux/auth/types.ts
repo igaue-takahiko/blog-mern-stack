@@ -4,7 +4,7 @@ export const AUTH = 'AUTH'
 
 export interface IAuth {
   msg?: string
-  token?: string
+  access_token?: string
   user?: IUser
 }
 
