@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { OAuth2Client } from 'google-auth-library';
+import fetch from 'node-fetch';
 
 import Users from '../models/userModel';
 import { generateAccessToken, generateActiveToken, generateRefreshToken } from '../config/generateToken';
@@ -33,12 +34,12 @@ const authCtrl = {
 
       if (validateEmail(account)) {
         sendMail(account, url, 'あなたのメールアドレスを確認してください。')
-        return res.json({ msg: "登録に出来ました。 メールを確認してください。" })
+        return res.json({ msg: "仮登録に出来ました。 メールを確認してください。" })
       }
 
       if (validPhone(account)) {
         sendSms(account, url, '電話番号の確認です。')
-        return res.json({ msg: "登録に出来ました。 SMSを確認してください。" })
+        return res.json({ msg: "仮登録に出来ました。 SMSを確認してください。" })
       }
 
     } catch (error: any) {
@@ -143,6 +144,39 @@ const authCtrl = {
           account: email,
           password: passwordHash,
           avatar: picture,
+          type: 'login'
+        }
+        registerUser(user, res)
+      }
+    } catch (error) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  facebookLogin: async (req: Request, res: Response) => {
+    try {
+      const { accessToken, userID } = req.body
+
+      const URL = `https://graph.facebook.com/v3.0/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`
+
+      const data = await fetch(URL)
+        .then(res => res.json())
+        .then(res => { return res })
+
+      const { email, name, picture } = data
+
+      const password = `${email} your facebook secret password`
+      const passwordHash = await bcrypt.hash(password, 12)
+
+      const user = await Users.findOne({ account: email })
+
+      if (user) {
+        loginUser(user, password, res)
+      } else {
+        const user = {
+          name,
+          account: email,
+          password: passwordHash,
+          avatar: picture.data.url,
           type: 'login'
         }
         registerUser(user, res)

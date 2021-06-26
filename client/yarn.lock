@@ -9354,6 +9354,11 @@
   "resolved" "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.9.tgz"
   "version" "6.0.9"
 
+"react-facebook-login-lite@^1.0.0":
+  "integrity" "sha512-80zkqOMYdrAAaRHbkmzcn76pbqp4zjhMW/VZC6tPe/vHJxTor1geVbUEE/JFJsSIZZHu5CQT3mKbPghJj3M2dw=="
+  "resolved" "https://registry.npmjs.org/react-facebook-login-lite/-/react-facebook-login-lite-1.0.0.tgz"
+  "version" "1.0.0"
+
 "react-google-login-lite@^1.0.0":
   "integrity" "sha512-JMmMvjJdrBeqy85DrEx9t0VWqT92tlSA2YzjkRjnDhWLkImCEon6c190g8nU6gvDQ2UjatkuuYv+8nnUxHRHTg=="
   "resolved" "https://registry.npmjs.org/react-google-login-lite/-/react-google-login-lite-1.0.0.tgz"
