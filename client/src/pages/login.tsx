@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
-import { LoginPass, LoginSMS } from "../components/auth";
+import { LoginPass, LoginSMS, SocialLogin } from "../components/auth";
 import { RootStore } from "../utils/globalTypes";
 
 const Login: React.FC = () => {
@@ -21,6 +21,7 @@ const Login: React.FC = () => {
     <div className="auth_page">
       <div className="auth_box">
         <h3 className="text-uppercase text-center mb-4">Login</h3>
+        <SocialLogin />
         {sms ? <LoginSMS /> : <LoginPass />}
         <small className="row my-2 text-primary" style={{ cursor: "pointer" }}>
           <span className="col-md-6">
