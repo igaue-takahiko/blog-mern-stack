@@ -8,7 +8,7 @@ import Users from '../models/userModel';
 import { generateAccessToken, generateActiveToken, generateRefreshToken } from '../config/generateToken';
 import { validateEmail, validPhone } from '../middleware/valid';
 import sendMail from '../config/sendMail';
-import { sendSms } from '../config/sendSMS';
+import { sendSms, smsOTP, smsVerity } from '../config/sendSMS';
 import { IDecodedToken, IUser, IGooglePayload, IUserParams } from '../config/interface';
 
 const CLIENT_URL = `${process.env.BASE_URL}`
@@ -34,12 +34,12 @@ const authCtrl = {
 
       if (validateEmail(account)) {
         sendMail(account, url, 'あなたのメールアドレスを確認してください。')
-        return res.json({ msg: "仮登録に出来ました。 メールを確認してください。" })
+        return res.json({ msg: "仮登録が出来ました。 メールを確認してください。" })
       }
 
       if (validPhone(account)) {
         sendSms(account, url, '電話番号の確認です。')
-        return res.json({ msg: "仮登録に出来ました。 SMSを確認してください。" })
+        return res.json({ msg: "仮登録が出来ました。 SMSを確認してください。" })
       }
 
     } catch (error: any) {
@@ -184,7 +184,47 @@ const authCtrl = {
     } catch (error) {
       return res.status(500).json({ msg: error.message })
     }
-  }
+  },
+  loginSMS: async (req: Request, res: Response) => {
+    try {
+      const { phone } = req.body
+
+      const data = await smsOTP(phone, "sms")
+      res.json(data)
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  smsVerify: async (req: Request, res: Response) => {
+    try {
+      const { phone, code } = req.body
+
+      const data = await smsVerity(phone, code)
+      if (!data?.valid) {
+        return res.status(400).json({ msg: "無効な認証。" })
+      }
+
+      const password = `${phone} your phone secret password`
+      const passwordHash = await bcrypt.hash(password, 12)
+
+      const user = await Users.findOne({ account: phone })
+
+      if (user) {
+        loginUser(user, password, res)
+      } else {
+        const user = {
+          name: phone,
+          account: phone,
+          password: passwordHash,
+          type: 'login'
+        }
+        registerUser(user, res)
+      }
+
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
 }
 
 const loginUser = async (user: IUser, password: string, res: Response) => {

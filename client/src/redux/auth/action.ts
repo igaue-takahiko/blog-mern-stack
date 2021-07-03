@@ -3,7 +3,7 @@ import { AUTH, IAuthType } from './types';
 import { ALERT, IAlertType } from '../alert/types';
 import { postAPI, getAPI } from '../../utils/fetchData';
 import { IUserLogin, IUserRegister } from '../../utils/globalTypes';
-import { validRegister } from '../../utils/valid';
+import { validRegister, validPhone } from '../../utils/valid';
 
 export const login = (userLogin: IUserLogin) => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
   try {
@@ -92,5 +92,44 @@ export const facebookLogin = (accessToken: string, userID: string) => async (dis
     localStorage.setItem('logged', 't.i-blog')
   } catch (error) {
     dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+  }
+}
+
+export const loginSMS = (phone: string) => async (dispatch:Dispatch<IAlertType | IAuthType>) => {
+  const check = validPhone(phone)
+  if (!check) {
+    return dispatch({ type: ALERT, payload: { errors: "電話番号の形式が正しくありません。" } })
+  }
+
+  try {
+    dispatch({ type: ALERT, payload: { loading: true } })
+    const res = await postAPI('login_sms', { phone })
+
+    if (!res.data.valid) {
+      verifySMS(phone, dispatch)
+    }
+  } catch (error) {
+    dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+  }
+}
+
+export const verifySMS = async (phone: string, dispatch:Dispatch<IAuthType | IAlertType>) => {
+  const code = prompt("認証コードを入力してください。")
+  if (!code) {
+    return
+  }
+
+  try {
+    const res = await postAPI("sms_verify", { phone, code })
+
+    dispatch({ type: AUTH, payload: res.data })
+
+    dispatch({ type: ALERT, payload: { success: res.data.msg } })
+    localStorage.setItem("logged", "t.i-blog")
+  } catch (error) {
+    dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+      setTimeout(() => {
+        verifySMS(phone, dispatch)
+      }, 100);
   }
 }

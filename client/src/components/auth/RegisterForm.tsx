@@ -50,7 +50,7 @@ const RegisterForm: React.FC = () => {
           id="account"
           name="account"
           value={account}
-          placeholder="Example@gmail.com/+81374481936"
+          placeholder="例）Example@gmail.com/+81 374481936"
           onChange={handleChangeInput}
         />
       </div>

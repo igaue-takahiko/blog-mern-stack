@@ -1,10 +1,20 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
+
+import { FormSubmit } from '../../utils/globalTypes';
+import { loginSMS } from '../../redux/auth/action';
 
 const LoginSMS: React.FC = () => {
+  const dispatch = useDispatch()
   const [phone, setPhone] = useState("");
 
+  const handleSubmit = (e: FormSubmit) => {
+    e.preventDefault()
+    dispatch(loginSMS(phone))
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="form-group mb-3">
         <label htmlFor="phone" className="form-label">
           電話番号
@@ -14,6 +24,7 @@ const LoginSMS: React.FC = () => {
           className="form-control"
           id="phone"
           value={phone}
+          placeholder="例）+81 90243456778"
           onChange={(e) => setPhone(e.target.value)}
         />
       </div>
