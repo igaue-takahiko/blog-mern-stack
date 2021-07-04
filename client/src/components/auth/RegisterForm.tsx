@@ -1,28 +1,28 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
 
-import { InputChange, FormSubmit } from "../../utils/globalTypes";
-import { register } from "../../redux/auth/action";
+import { InputChange, FormSubmit } from "../../utils/globalTypes"
+import { register } from "../../redux/auth/action"
 
 const RegisterForm: React.FC = () => {
-  const dispatch = useDispatch();
-  const initialSate = { name: "", account: "", password: "", cf_password: "" };
+  const dispatch = useDispatch()
+  const initialSate = { name: "", account: "", password: "", cf_password: "" }
 
-  const [userRegister, setUserRegister] = useState(initialSate);
-  const [typePass, setTypePass] = useState(false);
-  const [typeCfPass, setTypeCfPass] = useState(false);
+  const [userRegister, setUserRegister] = useState(initialSate)
+  const [typePass, setTypePass] = useState(false)
+  const [typeCfPass, setTypeCfPass] = useState(false)
 
-  const { name, account, password, cf_password } = userRegister;
+  const { name, account, password, cf_password } = userRegister
 
   const handleChangeInput = (e: InputChange) => {
-    const { value, name } = e.target;
-    setUserRegister({ ...userRegister, [name]: value });
-  };
+    const { value, name } = e.target
+    setUserRegister({ ...userRegister, [name]: value })
+  }
 
   const handleSubmit = (e: FormSubmit) => {
-    e.preventDefault();
-    dispatch(register(userRegister));
-  };
+    e.preventDefault()
+    dispatch(register(userRegister))
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -103,12 +103,12 @@ const RegisterForm: React.FC = () => {
       <button
         type="submit"
         className="btn btn-dark w-100 my-1"
-        disabled={(account && password) ? false : true}
+        disabled={account && password ? false : true}
       >
         登録
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default RegisterForm;
+export default RegisterForm

@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
 
-import { InputChange, FormSubmit } from "../../utils/globalTypes";
-import { login } from '../../redux/auth/action';
+import { InputChange, FormSubmit } from "../../utils/globalTypes"
+import { login } from "../../redux/auth/action"
 
 const LoginPass: React.FC = () => {
   const dispatch = useDispatch()
-  const initialState = { account: "", password: "" };
+  const initialState = { account: "", password: "" }
 
-  const [userLogin, setUserLogin] = useState(initialState);
-  const [typePass, setTypePass] = useState(false);
+  const [userLogin, setUserLogin] = useState(initialState)
+  const [typePass, setTypePass] = useState(false)
 
-  const { account, password } = userLogin;
+  const { account, password } = userLogin
 
   const handleChangeInput = (e: InputChange) => {
-    const { value, name } = e.target;
-    setUserLogin({ ...userLogin, [name]: value });
-  };
+    const { value, name } = e.target
+    setUserLogin({ ...userLogin, [name]: value })
+  }
 
   const handleSubmit = (e: FormSubmit) => {
-    e.preventDefault();
+    e.preventDefault()
     dispatch(login(userLogin))
   }
 
@@ -68,7 +68,7 @@ const LoginPass: React.FC = () => {
         ログイン
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default LoginPass;
+export default LoginPass

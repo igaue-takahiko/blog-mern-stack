@@ -1,12 +1,18 @@
-import React, { useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useCallback } from "react"
+import { useSelector, useDispatch } from "react-redux"
 
-import { RootStore, InputChange, IUserProfile } from "../../utils/globalTypes";
-import { NotFound } from "../global";
+import {
+  RootStore,
+  InputChange,
+  IUserProfile,
+  FormSubmit,
+} from "../../utils/globalTypes"
+import { uploadUser } from "../../redux/profile/actions"
+import { NotFound } from "../global"
 
 const UserInfo: React.FC = () => {
-  const dispatch = useDispatch();
-  const { auth } = useSelector((state: RootStore) => state);
+  const dispatch = useDispatch()
+  const { auth } = useSelector((state: RootStore) => state)
 
   const initialState = {
     name: "",
@@ -14,35 +20,48 @@ const UserInfo: React.FC = () => {
     avatar: "",
     password: "",
     cf_password: "",
-  };
+  }
 
-  const [user, setUser] = useState<IUserProfile>(initialState);
-  const [typePass, setTypePass] = useState(false);
-  const [typeCfPass, setTypeCfPass] = useState(false);
+  const [user, setUser] = useState<IUserProfile>(initialState)
+  const [typePass, setTypePass] = useState(false)
+  const [typeCfPass, setTypeCfPass] = useState(false)
 
-  const { name, account, avatar, password, cf_password } = user;
+  const { name, account, avatar, password, cf_password } = user
 
-  const handleChangeInput = useCallback((e: InputChange) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  },[user]);
+  const handleChangeInput = useCallback(
+    (e: InputChange) => {
+      const { name, value } = e.target
+      setUser({ ...user, [name]: value })
+    },
+    [user],
+  )
 
-  const handleChangeFile = useCallback((e: InputChange) => {
-    const target = e.target as HTMLInputElement;
-    const files = target.files;
+  const handleChangeFile = useCallback(
+    (e: InputChange) => {
+      const target = e.target as HTMLInputElement
+      const files = target.files
 
-    if (files) {
-      const file = files[0];
-      setUser({ ...user, avatar: file });
+      if (files) {
+        const file = files[0]
+        setUser({ ...user, avatar: file })
+      }
+    },
+    [user],
+  )
+
+  const handleSubmit = (e: FormSubmit) => {
+    e.preventDefault()
+    if (avatar || name) {
+      dispatch(uploadUser(avatar as File, name, auth))
     }
-  },[user]);
+  }
 
   if (!auth.user) {
-    return <NotFound />;
+    return <NotFound />
   }
 
   return (
-    <form className="profile_info">
+    <form className="profile_info" onSubmit={handleSubmit}>
       <div className="info_avatar">
         <img
           src={avatar ? URL.createObjectURL(avatar) : auth.user?.avatar}
@@ -127,7 +146,7 @@ const UserInfo: React.FC = () => {
         アップロードする
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default UserInfo;
+export default UserInfo

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
 
-import { FormSubmit } from '../../utils/globalTypes';
-import { loginSMS } from '../../redux/auth/action';
+import { FormSubmit } from "../../utils/globalTypes"
+import { loginSMS } from "../../redux/auth/action"
 
 const LoginSMS: React.FC = () => {
   const dispatch = useDispatch()
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("")
 
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
@@ -36,7 +36,7 @@ const LoginSMS: React.FC = () => {
         ログイン
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default LoginSMS;
+export default LoginSMS

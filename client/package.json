@@ -26,7 +26,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "dotenv -e .env react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -36,6 +36,12 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": false,
+    "tabWidth": 2,
+    "trailingComma": "all"
   },
   "browserslist": {
     "production": [
@@ -50,6 +56,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "dotenv-cli": "^4.0.0"
   }
 }
