@@ -7,7 +7,7 @@ import {
   IUserProfile,
   FormSubmit,
 } from "../../utils/globalTypes"
-import { uploadUser } from "../../redux/profile/actions"
+import { uploadUser, resetPassword } from "../../redux/profile/actions"
 import { NotFound } from "../global"
 
 const UserInfo: React.FC = () => {
@@ -26,7 +26,7 @@ const UserInfo: React.FC = () => {
   const [typePass, setTypePass] = useState(false)
   const [typeCfPass, setTypeCfPass] = useState(false)
 
-  const { name, account, avatar, password, cf_password } = user
+  const { name, avatar, password, cf_password } = user
 
   const handleChangeInput = useCallback(
     (e: InputChange) => {
@@ -54,6 +54,10 @@ const UserInfo: React.FC = () => {
     if (avatar || name) {
       dispatch(uploadUser(avatar as File, name, auth))
     }
+
+    if (password && auth.access_token) {
+      dispatch(resetPassword(password, cf_password, auth.access_token))
+    }
   }
 
   if (!auth.user) {
@@ -79,7 +83,7 @@ const UserInfo: React.FC = () => {
           />
         </span>
       </div>
-      <div className="form-group my-3">
+      <div className="my-3 form-group">
         <label htmlFor="name">名前</label>
         <input
           type="text"
@@ -90,7 +94,7 @@ const UserInfo: React.FC = () => {
           onChange={handleChangeInput}
         />
       </div>
-      <div className="form-group my-3">
+      <div className="my-3 form-group">
         <label htmlFor="account">アカウント</label>
         <input
           type="text"
@@ -102,7 +106,12 @@ const UserInfo: React.FC = () => {
           disabled={true}
         />
       </div>
-      <div className="form-group my-3">
+      {auth.user.type !== 'register' && (
+        <span className="text-danger">
+          * {auth.user.type}のクイックログインアカウントはこの機能を使用できません *
+        </span>
+      )}
+      <div className="my-3 form-group">
         <label htmlFor="password">パスワード</label>
         <div className="pass">
           <input
@@ -112,6 +121,7 @@ const UserInfo: React.FC = () => {
             name="password"
             value={password}
             onChange={handleChangeInput}
+            disabled={auth.user.type !== 'register'}
           />
           <small onClick={() => setTypePass(!typePass)}>
             {typePass ? (
@@ -122,7 +132,7 @@ const UserInfo: React.FC = () => {
           </small>
         </div>
       </div>
-      <div className="form-group my-3">
+      <div className="my-3 form-group">
         <label htmlFor="cf_password">確認用パスワード</label>
         <div className="pass">
           <input
@@ -132,6 +142,7 @@ const UserInfo: React.FC = () => {
             name="cf_password"
             value={cf_password}
             onChange={handleChangeInput}
+            disabled={auth.user.type !== 'register'}
           />
           <small onClick={() => setTypeCfPass(!typeCfPass)}>
             {typeCfPass ? (

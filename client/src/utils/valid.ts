@@ -31,6 +31,16 @@ export const validRegister = (userRegister: IUserRegister) => {
   }
 }
 
+export const checkPassword = (password: string, cf_password: string) => {
+  if (password.length < 6) {
+    return ("パスワードは6文字以上でお願いします。")
+  }
+
+  if (password !== cf_password) {
+    return ('確認用のパスワードが一致しません。')
+  }
+}
+
 export const validPhone = (phone: string) => {
   const re = /^[+]/g
   return re.test(phone)

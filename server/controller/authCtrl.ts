@@ -170,7 +170,7 @@ const authCtrl = {
           account: email,
           password: passwordHash,
           avatar: picture,
-          type: "login",
+          type: "Google",
         }
         registerUser(user, res)
       }
@@ -205,7 +205,7 @@ const authCtrl = {
           account: email,
           password: passwordHash,
           avatar: picture.data.url,
-          type: "login",
+          type: "Facebook",
         }
         registerUser(user, res)
       }
@@ -244,7 +244,7 @@ const authCtrl = {
           name: phone,
           account: phone,
           password: passwordHash,
-          type: "login",
+          type: "SMS",
         }
         registerUser(user, res)
       }
@@ -257,7 +257,12 @@ const authCtrl = {
 const loginUser = async (user: IUser, password: string, res: Response) => {
   const isMatch = await bcrypt.compare(password, user.password)
   if (!isMatch) {
-    return res.status(400).json({ msg: "パスワードが正しくありません。" })
+    let msgError =
+      user.type === "register"
+        ? "パスワードが正しくありません"
+        : `パスワードが正しくありません。このアカウントで${user.type}ログインしたらログインできます。`
+
+    return res.status(400).json({ msg: msgError })
   }
 
   const access_token = generateAccessToken({ id: user._id })

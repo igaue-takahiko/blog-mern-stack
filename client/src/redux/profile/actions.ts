@@ -3,6 +3,7 @@ import { AUTH, IAuthType, IAuth } from "./../auth/types"
 import { IAlertType, ALERT } from "../alert/types"
 import { checkImage, imageUpload } from "../../utils/ImageUpload"
 import { patchAPI } from "../../utils/fetchData"
+import { checkPassword } from "../../utils/valid"
 
 export const uploadUser =
   (avatar: File, name: string, auth: IAuth) =>
@@ -44,6 +45,25 @@ export const uploadUser =
         },
         auth.access_token,
       )
+
+      dispatch({ type: ALERT, payload: { success: res.data.msg } })
+    } catch (error: any) {
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+    }
+  }
+
+export const resetPassword =
+  (password: string, cf_password: string, token: string) =>
+  async (dispatch: Dispatch<IAlertType | IAuthType>) => {
+    const message = checkPassword(password, cf_password)
+    if (message) {
+      return dispatch({ type: ALERT, payload: { errors: message } })
+    }
+
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } })
+
+      const res = await patchAPI("reset_password", { password }, token)
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {
