@@ -1,12 +1,11 @@
-import { Twilio } from 'twilio'
+import { Twilio } from "twilio"
 
-const accountSid = `${process.env.TWILIO_ACCOUNT_SID}`;
-const authToken = `${process.env.TWILIO_AUTH_TOKEN}`;
-const from = `${process.env.TWILIO_PHONE_NUMBER}`;
-const serviceID = `${process.env.TWILIO_SERVICE_ID}`;
+const accountSid = `${process.env.TWILIO_ACCOUNT_SID}`
+const authToken = `${process.env.TWILIO_AUTH_TOKEN}`
+const from = `${process.env.TWILIO_PHONE_NUMBER}`
+const serviceID = `${process.env.TWILIO_SERVICE_ID}`
 
 const client = new Twilio(accountSid, authToken)
-
 
 export const sendSms = (to: string, body: string, txt: string) => {
   try {
@@ -14,10 +13,9 @@ export const sendSms = (to: string, body: string, txt: string) => {
       .create({
         body: `T.I-blog ${txt} - ${body}`,
         from,
-        to
+        to,
       })
-      .then(message => console.log(message.sid));
-
+      .then((message) => console.log(message.sid))
   } catch (error) {
     console.log(error)
   }
@@ -25,20 +23,24 @@ export const sendSms = (to: string, body: string, txt: string) => {
 
 export const smsOTP = async (to: string, channel: string) => {
   try {
-    const data = await client.verify.services(serviceID).verifications.create({ to, channel })
+    const data = await client.verify
+      .services(serviceID)
+      .verifications.create({ to, channel })
 
     return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 export const smsVerity = async (to: string, code: string) => {
   try {
-    const data = await client.verify.services(serviceID).verificationChecks.create({ to, code })
+    const data = await client.verify
+      .services(serviceID)
+      .verificationChecks.create({ to, code })
 
     return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }

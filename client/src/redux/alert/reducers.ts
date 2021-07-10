@@ -1,8 +1,11 @@
-import { IAlert } from '../../utils/globalTypes';
-import { ALERT, IAlertType } from './types';
-import initialState from '../store/initialState';
+import { IAlert } from "../../utils/globalTypes"
+import { ALERT, IAlertType } from "./types"
+import initialState from "../store/initialState"
 
-const alertReducer = (state: IAlert = initialState.alert, action: IAlertType): IAlert => {
+const alertReducer = (
+  state: IAlert = initialState.alert,
+  action: IAlertType,
+): IAlert => {
   switch (action.type) {
     case ALERT:
       return action.payload

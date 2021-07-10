@@ -7,7 +7,7 @@ const Register: React.FC = () => {
   return (
     <div className="auth_page">
       <div className="auth_box">
-        <h3 className="text-uppercase text-center mb-4">Register</h3>
+        <h3 className="mb-4 text-center text-uppercase">Register</h3>
         <RegisterForm />
         <p className="mt-2">
           {"アカウントをお持ちの方は"}

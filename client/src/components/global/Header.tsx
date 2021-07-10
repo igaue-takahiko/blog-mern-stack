@@ -5,7 +5,7 @@ import Menu from "./Menu";
 
 const Header: React.FC = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light p-3 shadow">
+    <nav className="p-3 shadow navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
         T.I blog
       </Link>

@@ -10,8 +10,8 @@ const Profile: React.FC = () => {
   const { auth } = useSelector((state: RootStore) => state);
 
   return (
-    <div className="row my-3">
-      <div className="col-md-5 mb-3">
+    <div className="my-3 row">
+      <div className="mb-3 col-md-5">
         {auth.user?._id === slug ? <UserInfo /> : <OtherInfo />}
       </div>
       <div className="col-md-7">

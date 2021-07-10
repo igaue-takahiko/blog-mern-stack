@@ -1,6 +1,6 @@
 const initialSate = {
   auth: {},
-  alert: {}
+  alert: {},
 }
 
 export default initialSate

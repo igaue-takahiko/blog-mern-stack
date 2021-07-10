@@ -1,6 +1,6 @@
-import { IAlert } from '../../utils/globalTypes'
+import { IAlert } from "../../utils/globalTypes"
 
-export const ALERT = 'ALERT'
+export const ALERT = "ALERT"
 
 export interface IAlertType {
   type: typeof ALERT

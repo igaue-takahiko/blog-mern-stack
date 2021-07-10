@@ -1,6 +1,6 @@
-import { IUser } from '../../utils/globalTypes';
+import { IUser } from "../../utils/globalTypes"
 
-export const AUTH = 'AUTH'
+export const AUTH = "AUTH"
 
 export interface IAuth {
   msg?: string

@@ -1,15 +1,24 @@
-import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { OAuth2Client } from 'google-auth-library';
-import fetch from 'node-fetch';
+import { Request, Response } from "express"
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
+import { OAuth2Client } from "google-auth-library"
+import fetch from "node-fetch"
 
-import Users from '../models/userModel';
-import { generateAccessToken, generateActiveToken, generateRefreshToken } from '../config/generateToken';
-import { validateEmail, validPhone } from '../middleware/valid';
-import sendMail from '../config/sendMail';
-import { sendSms, smsOTP, smsVerity } from '../config/sendSMS';
-import { IDecodedToken, IUser, IGooglePayload, IUserParams } from '../config/interface';
+import Users from "../models/userModel"
+import {
+  generateAccessToken,
+  generateActiveToken,
+  generateRefreshToken,
+} from "../config/generateToken"
+import { validateEmail, validPhone } from "../middleware/valid"
+import sendMail from "../config/sendMail"
+import { sendSms, smsOTP, smsVerity } from "../config/sendSMS"
+import {
+  IDecodedToken,
+  IUser,
+  IGooglePayload,
+  IUserParams,
+} from "../config/interface"
 
 const CLIENT_URL = `${process.env.BASE_URL}`
 const client = new OAuth2Client(`${process.env.MAIL_CLIENT_ID}`)
@@ -21,7 +30,9 @@ const authCtrl = {
 
       const user = await Users.findOne({ account })
       if (user) {
-        return res.status(400).json({ msg: '入力したメールアドレスまたは電話番号はすでに存在します。' })
+        return res.status(400).json({
+          msg: "入力したメールアドレスまたは電話番号はすでに存在します。",
+        })
       }
 
       const passwordHash = await bcrypt.hash(password, 12)
@@ -33,15 +44,18 @@ const authCtrl = {
       const url = `${CLIENT_URL}/active/${active_token}`
 
       if (validateEmail(account)) {
-        sendMail(account, url, 'あなたのメールアドレスを確認してください。')
-        return res.json({ msg: "仮登録が出来ました。 メールを確認してください。" })
+        sendMail(account, url, "あなたのメールアドレスを確認してください。")
+        return res.json({
+          msg: "仮登録が出来ました。 メールを確認してください。",
+        })
       }
 
       if (validPhone(account)) {
-        sendSms(account, url, '電話番号の確認です。')
-        return res.json({ msg: "仮登録が出来ました。 SMSを確認してください。" })
+        sendSms(account, url, "電話番号の確認です。")
+        return res.json({
+          msg: "仮登録が出来ました。 SMSを確認してください。",
+        })
       }
-
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
@@ -50,7 +64,9 @@ const authCtrl = {
     try {
       const { active_token } = req.body
 
-      const decoded = <IDecodedToken>jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
+      const decoded = <IDecodedToken>(
+        jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
+      )
 
       const { newUser } = decoded
 
@@ -60,7 +76,9 @@ const authCtrl = {
 
       const user = await Users.findOne({ account: newUser.account })
       if (user) {
-        return res.status(400).json({ msg: "アカウントはすでに存在しています。" })
+        return res
+          .status(400)
+          .json({ msg: "アカウントはすでに存在しています。" })
       }
 
       const new_user = new Users(newUser)
@@ -69,7 +87,6 @@ const authCtrl = {
 
       res.json({ msg: "アカウントが有効化されました！" })
     } catch (error: any) {
-
       return res.status(500).json({ msg: error.message })
     }
   },
@@ -79,7 +96,9 @@ const authCtrl = {
 
       const user = await Users.findOne({ account })
       if (!user) {
-        return res.status(400).json({ msg: "そのアカウントは登録できていません。" })
+        return res
+          .status(400)
+          .json({ msg: "そのアカウントは登録できていません。" })
       }
 
       loginUser(user, password, res)
@@ -103,7 +122,9 @@ const authCtrl = {
         return res.status(400).json({ msg: "今すぐログインしてください！" })
       }
 
-      const decoded = <IDecodedToken>jwt.verify(rf_token, `${process.env.REFRESH_TOKEN_SECRET}`)
+      const decoded = <IDecodedToken>(
+        jwt.verify(rf_token, `${process.env.REFRESH_TOKEN_SECRET}`)
+      )
       if (!decoded.id) {
         return res.status(400).json({ msg: "今すぐログインしてください！" })
       }
@@ -123,9 +144,14 @@ const authCtrl = {
   googleLogin: async (req: Request, res: Response) => {
     try {
       const { id_token } = req.body
-      const verify = await client.verifyIdToken({ idToken: id_token, audience: `${process.env.MAIL_CLIENT_ID}` })
+      const verify = await client.verifyIdToken({
+        idToken: id_token,
+        audience: `${process.env.MAIL_CLIENT_ID}`,
+      })
 
-      const { email, email_verified, name, picture } = <IGooglePayload>verify.getPayload()
+      const { email, email_verified, name, picture } = <IGooglePayload>(
+        verify.getPayload()
+      )
 
       if (!email_verified) {
         return res.status(500).json({ msg: "メールの確認に失敗しました。" })
@@ -144,7 +170,7 @@ const authCtrl = {
           account: email,
           password: passwordHash,
           avatar: picture,
-          type: 'login'
+          type: "login",
         }
         registerUser(user, res)
       }
@@ -159,8 +185,10 @@ const authCtrl = {
       const URL = `https://graph.facebook.com/v3.0/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`
 
       const data = await fetch(URL)
-        .then(res => res.json())
-        .then(res => { return res })
+        .then((res) => res.json())
+        .then((res) => {
+          return res
+        })
 
       const { email, name, picture } = data
 
@@ -177,7 +205,7 @@ const authCtrl = {
           account: email,
           password: passwordHash,
           avatar: picture.data.url,
-          type: 'login'
+          type: "login",
         }
         registerUser(user, res)
       }
@@ -216,11 +244,10 @@ const authCtrl = {
           name: phone,
           account: phone,
           password: passwordHash,
-          type: 'login'
+          type: "login",
         }
         registerUser(user, res)
       }
-
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
@@ -239,13 +266,13 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
   res.cookie("refresh_token", refresh_token, {
     httpOnly: true,
     path: `/api/refresh_token`,
-    maxAge: 30 * 24 * 60 * 60 * 1000 //30日
+    maxAge: 30 * 24 * 60 * 60 * 1000, //30日
   })
 
   res.json({
     msg: "ログインできました！",
     access_token,
-    user: { ...user._doc, password: "" }
+    user: { ...user._doc, password: "" },
   })
 }
 
@@ -259,13 +286,13 @@ const registerUser = async (user: IUserParams, res: Response) => {
   res.cookie("refresh_token", refresh_token, {
     httpOnly: true,
     path: `/api/refresh_token`,
-    maxAge: 30 * 24 * 60 * 60 * 1000 //30日
+    maxAge: 30 * 24 * 60 * 60 * 1000, //30日
   })
 
   res.json({
     msg: "ログインできました！",
     access_token,
-    user: { ...newUser._doc, password: "" }
+    user: { ...newUser._doc, password: "" },
   })
 }
 

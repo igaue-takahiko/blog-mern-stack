@@ -26,7 +26,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-group mb-3">
+      <div className="mb-3 form-group">
         <label htmlFor="name" className="form-label">
           名前
         </label>
@@ -40,7 +40,7 @@ const RegisterForm: React.FC = () => {
           onChange={handleChangeInput}
         />
       </div>
-      <div className="form-group mb-3">
+      <div className="mb-3 form-group">
         <label htmlFor="account" className="form-label">
           メールアドレス / 電話番号
         </label>
@@ -54,7 +54,7 @@ const RegisterForm: React.FC = () => {
           onChange={handleChangeInput}
         />
       </div>
-      <div className="form-group mb-3">
+      <div className="mb-3 form-group">
         <label htmlFor="password" className="form-label">
           パスワード
         </label>
@@ -77,7 +77,7 @@ const RegisterForm: React.FC = () => {
           </small>
         </div>
       </div>
-      <div className="form-group mb-3">
+      <div className="mb-3 form-group">
         <label htmlFor="cf_password" className="form-label">
           確認用パスワード
         </label>
@@ -102,7 +102,7 @@ const RegisterForm: React.FC = () => {
       </div>
       <button
         type="submit"
-        className="btn btn-dark w-100 my-1"
+        className="my-1 btn btn-dark w-100"
         disabled={account && password ? false : true}
       >
         登録

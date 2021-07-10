@@ -3,7 +3,7 @@ import React from "react";
 const Loading: React.FC = () => {
   return (
     <div
-      className="position-fixed w-100 h-100 text-center loading"
+      className="text-center position-fixed w-100 h-100 loading"
       style={{
         background: "#0007",
         color: "white",

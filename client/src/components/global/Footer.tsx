@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <div className="text-center bg-light py-4">
+    <div className="py-4 text-center bg-light">
       <h6>Welcome to my Twitter</h6>
       <a
         href="http://twitter.com/takahiko_igaue"
