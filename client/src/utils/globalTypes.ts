@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent } from 'react';
-import { rootReducer } from '../redux/store';
+import { ChangeEvent, FormEvent } from "react"
+import { rootReducer } from "../redux/store"
 
 export type InputChange = ChangeEvent<HTMLInputElement>
 
@@ -45,4 +45,11 @@ export interface IAlert {
   loading?: boolean
   success?: string | string[]
   errors?: string | string[]
+}
+
+export interface ICategory {
+  _id: string
+  name: string
+  createdAt: string
+  updatedAt: string
 }

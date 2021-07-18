@@ -6,12 +6,14 @@ import PageRender from "./PageRender"
 import { Header, Footer } from "./components/global"
 import { Alert } from "./components/alert/Alert"
 import { refreshToken } from "./redux/auth/action"
+import { getCategories } from './redux/category/actions';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(refreshToken())
+    dispatch(getCategories())
   }, [dispatch])
 
   return (

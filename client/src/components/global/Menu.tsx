@@ -15,8 +15,8 @@ const Menu: React.FC = () => {
   ];
 
   const afLoginLinks = [
-    { label: "Home", path: "/" },
-    { label: "CreateBlog", path: "/create_blog" },
+    { label: "ホーム", path: "/" },
+    { label: "ブログ", path: "/create_blog" },
   ];
 
   const navLinks = auth.access_token ? afLoginLinks : bfLoginLinks;
@@ -36,6 +36,11 @@ const Menu: React.FC = () => {
           </Link>
         </li>
       ))}
+      {auth.user?.role === 'admin' && (
+        <li className={`nav-item ${isActive('/category')}`}>
+          <Link className="nav-link" to="/category">カテゴリー</Link>
+        </li>
+      )}
       {auth.user && (
         <li className="nav-item dropdown">
           <span
