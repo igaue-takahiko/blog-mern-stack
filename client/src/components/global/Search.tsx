@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 const Search: React.FC = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("")
 
   return (
-    <div className="search w-100 position-relative me-4">
+    <div className="search position-relative me-4">
       <input
         type="text"
         className="form-control me-2 w-100"
@@ -13,7 +13,7 @@ const Search: React.FC = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

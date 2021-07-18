@@ -25,7 +25,7 @@ const LoginPass: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-3 form-group">
+      <div className="mb-3 input-group">
         <label htmlFor="account" className="form-label">
           メールアドレス / 電話番号
         </label>
@@ -38,7 +38,7 @@ const LoginPass: React.FC = () => {
           onChange={handleChangeInput}
         />
       </div>
-      <div className="mb-3 form-group">
+      <div className="mb-3 input-group">
         <label htmlFor="password" className="form-label">
           パスワード
         </label>

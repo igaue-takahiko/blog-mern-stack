@@ -1,31 +1,31 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "../../utils/globalTypes";
-import { logout } from "../../redux/auth/action";
+import React from "react"
+import { Link, useLocation } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { RootStore } from "../../utils/globalTypes"
+import { logout } from "../../redux/auth/action"
 
 const Menu: React.FC = () => {
-  const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const { auth } = useSelector((state: RootStore) => state);
+  const dispatch = useDispatch()
+  const { pathname } = useLocation()
+  const { auth } = useSelector((state: RootStore) => state)
 
   const bfLoginLinks = [
     { label: "Login", path: "/login" },
     { label: "Register", path: "/register" },
-  ];
+  ]
 
   const afLoginLinks = [
     { label: "ホーム", path: "/" },
     { label: "ブログ", path: "/create_blog" },
-  ];
+  ]
 
-  const navLinks = auth.access_token ? afLoginLinks : bfLoginLinks;
+  const navLinks = auth.access_token ? afLoginLinks : bfLoginLinks
 
   const isActive = (pn: string) => {
     if (pn === pathname) {
-      return "active";
+      return "active"
     }
-  };
+  }
 
   return (
     <ul className="navbar-nav ms-auto">
@@ -36,9 +36,11 @@ const Menu: React.FC = () => {
           </Link>
         </li>
       ))}
-      {auth.user?.role === 'admin' && (
-        <li className={`nav-item ${isActive('/category')}`}>
-          <Link className="nav-link" to="/category">カテゴリー</Link>
+      {auth.user?.role === "admin" && (
+        <li className={`nav-item ${isActive("/category")}`}>
+          <Link className="nav-link" to="/category">
+            カテゴリー
+          </Link>
         </li>
       )}
       {auth.user && (
@@ -74,7 +76,7 @@ const Menu: React.FC = () => {
         </li>
       )}
     </ul>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu

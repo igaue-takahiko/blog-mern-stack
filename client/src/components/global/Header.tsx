@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Search from "./Search";
-import Menu from "./Menu";
+import React from "react"
+import { Link } from "react-router-dom"
+import Search from "./Search"
+import Menu from "./Menu"
 
 const Header: React.FC = () => {
   return (
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
         <Menu />
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

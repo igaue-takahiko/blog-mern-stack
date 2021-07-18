@@ -106,9 +106,10 @@ const UserInfo: React.FC = () => {
           disabled={true}
         />
       </div>
-      {auth.user.type !== 'register' && (
+      {auth.user.type !== "register" && (
         <span className="text-danger">
-          * {auth.user.type}のクイックログインアカウントはこの機能を使用できません *
+          * {auth.user.type}
+          のクイックログインアカウントはこの機能を使用できません *
         </span>
       )}
       <div className="my-3 form-group">
@@ -121,7 +122,7 @@ const UserInfo: React.FC = () => {
             name="password"
             value={password}
             onChange={handleChangeInput}
-            disabled={auth.user.type !== 'register'}
+            disabled={auth.user.type !== "register"}
           />
           <small onClick={() => setTypePass(!typePass)}>
             {typePass ? (
@@ -142,7 +143,7 @@ const UserInfo: React.FC = () => {
             name="cf_password"
             value={cf_password}
             onChange={handleChangeInput}
-            disabled={auth.user.type !== 'register'}
+            disabled={auth.user.type !== "register"}
           />
           <small onClick={() => setTypeCfPass(!typeCfPass)}>
             {typeCfPass ? (

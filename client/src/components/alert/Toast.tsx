@@ -1,19 +1,19 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { ALERT } from "../../redux/alert/types";
+import React from "react"
+import { useDispatch } from "react-redux"
+import { ALERT } from "../../redux/alert/types"
 
 interface IProps {
-  title: string;
-  body: string | string[];
-  bgColor: string;
+  title: string
+  body: string | string[]
+  bgColor: string
 }
 
-const Toast = ({ title, body, bgColor }: IProps) => {
-  const dispatch = useDispatch();
+const Toast: React.FC<IProps> = ({ title, body, bgColor }) => {
+  const dispatch = useDispatch()
 
   const handleClose = () => {
-    dispatch({ type: ALERT, payload: {} });
-  };
+    dispatch({ type: ALERT, payload: {} })
+  }
 
   return (
     <div
@@ -42,7 +42,7 @@ const Toast = ({ title, body, bgColor }: IProps) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Toast;
+export default Toast

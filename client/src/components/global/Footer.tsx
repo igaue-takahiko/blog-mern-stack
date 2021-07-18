@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const Footer: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
       </a>
       <p> Copyright &copy; 2021</p>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
