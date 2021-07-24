@@ -22,7 +22,7 @@ export const createCategory =
 
       dispatch({ type: ALERT, payload: { loading: false } })
     } catch (error: any) {
-      dispatch({ type: ALERT, payload: { errors: error.response.date.msg } })
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
 
@@ -37,7 +37,7 @@ export const getCategories =
 
       dispatch({ type: ALERT, payload: { loading: false } })
     } catch (error: any) {
-      dispatch({ type: ALERT, payload: { errors: error.response.date.msg } })
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
 
@@ -49,7 +49,7 @@ export const updateCategory =
 
       await patchAPI(`category/${data._id}`, { name: data.name }, token)
     } catch (error: any) {
-      dispatch({ type: ALERT, payload: { errors: error.response.date.msg } })
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
 
@@ -61,6 +61,6 @@ export const deleteCategory =
 
       await deleteAPI(`category/${id}`, token)
     } catch (error: any) {
-      dispatch({ type: ALERT, payload: { errors: error.response.date.msg } })
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }

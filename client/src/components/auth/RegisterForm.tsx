@@ -26,7 +26,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-3 input-group">
+      <div className="mb-3">
         <label htmlFor="name" className="form-label">
           名前
         </label>
@@ -40,7 +40,7 @@ const RegisterForm: React.FC = () => {
           onChange={handleChangeInput}
         />
       </div>
-      <div className="mb-3 input-group">
+      <div className="mb-3">
         <label htmlFor="account" className="form-label">
           メールアドレス / 電話番号
         </label>
@@ -54,7 +54,7 @@ const RegisterForm: React.FC = () => {
           onChange={handleChangeInput}
         />
       </div>
-      <div className="mb-3 input-group">
+      <div className="mb-3">
         <label htmlFor="password" className="form-label">
           パスワード
         </label>
@@ -77,7 +77,7 @@ const RegisterForm: React.FC = () => {
           </small>
         </div>
       </div>
-      <div className="mb-3 input-group">
+      <div className="mb-3">
         <label htmlFor="cf_password" className="form-label">
           確認用パスワード
         </label>

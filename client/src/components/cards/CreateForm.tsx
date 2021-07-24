@@ -75,12 +75,12 @@ const CreateForm: React.FC<IProps> = ({ blog, setBlog }) => {
       <div className="my-3 form-floating">
         <select
           className="form-select text-capitalize"
-          id='category'
+          id="category"
           name="category"
           value={blog.category}
           onChange={handleChangeInput}
         >
-          <option selected>カテゴリー選択</option>
+          <option defaultValue="">カテゴリー選択</option>
           {categories.map((category) => (
             <option key={category._id} value={category._id}>
               {category.name}

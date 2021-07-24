@@ -1,10 +1,14 @@
 export const checkImage = (file: File) => {
+  const types = ["image/png", "image/jpeg"]
   let error = ""
   if (!file) {
     return (error = "画像ファイルがありません。")
   }
   if (file.size > 1024 * 1024) {
     error = "画像サイズは最大1MBまでです"
+  }
+  if (!types.includes(file.type)) {
+    error = "使用できる画像タイプはpng / jpegだけです。"
   }
 
   return error

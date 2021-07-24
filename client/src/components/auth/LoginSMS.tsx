@@ -15,7 +15,7 @@ const LoginSMS: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-3 input-group">
+      <div className="mb-3">
         <label htmlFor="phone" className="form-label">
           電話番号
         </label>
