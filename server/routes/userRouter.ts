@@ -1,5 +1,5 @@
 import express from "express"
-import userCtrl from "../controller/userCtrl"
+import userCtrl from "../controllers/userCtrl"
 import auth from "../middleware/auth"
 
 const router = express.Router()

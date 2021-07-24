@@ -1,7 +1,7 @@
 import { Response } from "express"
 import bcrypt from "bcrypt"
 
-import { IReqAuth } from "./../config/interface"
+import { IReqAuth } from "../config/interface"
 import Users from "../models/userModel"
 
 const userCtrl = {

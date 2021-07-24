@@ -73,8 +73,8 @@ export const validCreateBlog = ({
     error.push("コンテンツの文字数は1000文字以上でお願いします。")
   }
 
-  if (description.trim().length < 50) {
-    error.push("説明文は50文字以上でお願いします。")
+  if (description.trim().length < 10) {
+    error.push("説明文は10文字以上でお願いします。")
   }
   if (description.trim().length > 200) {
     error.push("説明文は最大200文字まででお願いします。")

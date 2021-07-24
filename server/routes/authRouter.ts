@@ -1,5 +1,5 @@
 import express from "express"
-import authCtrl from "../controller/authCtrl"
+import authCtrl from "../controllers/authCtrl"
 import { validRegister } from "../middleware/valid"
 
 const router = express.Router()
