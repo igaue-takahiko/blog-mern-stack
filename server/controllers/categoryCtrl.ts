@@ -52,10 +52,10 @@ const categoryCtrl = {
     try {
       await Categories.findOneAndUpdate(
         { _id: req.params.id },
-        { name: req.body.name },
+        { name: (req.body.name).toLowerCase() },
       )
 
-      res.json({ msg: "アップデートが出来ました。" })
+      res.json({ msg: "アップデートが完了しました" })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
@@ -72,7 +72,7 @@ const categoryCtrl = {
     try {
       await Categories.findByIdAndDelete(req.params.id)
 
-      res.json({ msg: "削除が出来ました。" })
+      res.json({ msg: "削除が完了しました。" })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
