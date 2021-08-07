@@ -5,9 +5,14 @@ import { Link } from "react-router-dom"
 import { RootStore } from "../utils/globalTypes"
 
 import { CardVertically } from "../components/cards"
+import { SpinnerLoading } from "../components/global"
 
 const Home: React.FC = () => {
   const { blogs } = useSelector((state: RootStore) => state)
+
+  if (blogs.length === 0) {
+    return <SpinnerLoading />
+  }
 
   return (
     <div className="home_page">

@@ -5,7 +5,7 @@ import Menu from "./Menu"
 
 const Header: React.FC = () => {
   return (
-    <nav className="p-3 shadow navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="p-3 shadow navbar navbar-expand-lg navbar-light bg-light position-sticky top-0" style={{ zIndex: 2 }}>
       <Link className="navbar-brand" to="/">
         T.I blog
       </Link>

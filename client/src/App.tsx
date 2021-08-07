@@ -14,8 +14,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(getHomeBlogs())
-    dispatch(getCategories())
     dispatch(refreshToken())
+    dispatch(getCategories())
   }, [dispatch])
 
   return (
