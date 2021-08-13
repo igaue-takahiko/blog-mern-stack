@@ -13,3 +13,4 @@ export interface IGetHomeBlogsType {
   type: typeof GET_HOME_BLOGS
   payload: IHomeBlogs[]
 }
+

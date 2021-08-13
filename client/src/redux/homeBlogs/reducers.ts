@@ -1,8 +1,8 @@
 import initialState from "../store/initialState"
 import * as blogsTypes from "./types"
 
-const blogsReducer = (
-  state: blogsTypes.IHomeBlogs[] = initialState.blogs,
+const homeBlogsReducer = (
+  state: blogsTypes.IHomeBlogs[] = initialState.homeBlogs,
   action: blogsTypes.IGetHomeBlogsType,
 ): blogsTypes.IHomeBlogs[] => {
   switch (action.type) {
@@ -13,4 +13,4 @@ const blogsReducer = (
   }
 }
 
-export default blogsReducer
+export default homeBlogsReducer

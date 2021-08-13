@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { RootStore, IBlog } from "../utils/globalTypes"
 import { ALERT } from "../redux/alert/types"
-import { createBlog } from "../redux/blog/actions"
+import { createBlog } from "../redux/homeBlogs/actions"
 import { validCreateBlog } from "../utils/valid"
 
 import { NotFound } from "../components/global"

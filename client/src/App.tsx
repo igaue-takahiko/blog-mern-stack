@@ -7,7 +7,7 @@ import { Header, Footer } from "./components/global"
 import { Alert } from "./components/alert/Alert"
 import { refreshToken } from "./redux/auth/action"
 import { getCategories } from './redux/category/actions';
-import { getHomeBlogs } from './redux/blog/actions';
+import { getHomeBlogs } from './redux/homeBlogs/actions';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()

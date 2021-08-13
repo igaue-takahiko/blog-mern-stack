@@ -6,7 +6,7 @@ import { IReqAuth } from "../config/interface"
 const Pagination = (req: IReqAuth) => {
   let page = Number(req.query.page) * 1 || 1
   let limit = Number(req.query.limit) * 1 || 4
-  let skip = (page = 1) * limit
+  let skip = (page - 1) * limit
 
   return { page, limit, skip }
 }
@@ -30,7 +30,7 @@ const blogCtrl = {
       })
 
       await newBlog.save()
-      res.json({ newBlog })
+      res.json({ newBlog, msg: "投稿が完了しました" })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }

@@ -2,7 +2,8 @@ const initialSate = {
   auth: {},
   alert: {},
   categories: [],
-  blogs: []
+  homeBlogs: [],
+  blogsCategory: []
 }
 
 export default initialSate

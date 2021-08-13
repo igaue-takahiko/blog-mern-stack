@@ -33,4 +33,4 @@ const blogSchema = new mongoose.Schema(
   },
 )
 
-export default mongoose.model("Blog", blogSchema)
+export default mongoose.model("blog", blogSchema)

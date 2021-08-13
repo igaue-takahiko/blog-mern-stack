@@ -21,9 +21,9 @@ export const createBlog =
       const newBlog = { ...blog, thumbnail: url }
 
       const res = await postAPI("blog", newBlog, token)
-      console.log(res)
 
       dispatch({ type: ALERT, payload: { loading: false } })
+      dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
