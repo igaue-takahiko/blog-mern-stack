@@ -41,8 +41,12 @@ const BlogsByCategory: React.FC = () => {
 
       setBlogs(data.blogs)
       setTotal(data.total)
+
+      if (data.search) {
+        history.push(data.search)
+      }
     }
-  }, [blogsCategory, categoryId, dispatch, search])
+  }, [blogsCategory, categoryId, dispatch, history, search])
 
   const handlePagination = (num: number) => {
     const search = `?page=${num}`
