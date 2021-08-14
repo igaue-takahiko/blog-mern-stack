@@ -3,7 +3,8 @@ const initialSate = {
   alert: {},
   categories: [],
   homeBlogs: [],
-  blogsCategory: []
+  blogsCategory: [],
+  profile: []
 }
 
 export default initialSate

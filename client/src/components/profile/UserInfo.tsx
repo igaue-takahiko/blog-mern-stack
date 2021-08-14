@@ -7,7 +7,7 @@ import {
   IUserProfile,
   FormSubmit,
 } from "../../utils/globalTypes"
-import { uploadUser, resetPassword } from "../../redux/profile/actions"
+import { updateUser, resetPassword } from "../../redux/profile/actions"
 import { NotFound } from "../global"
 
 const UserInfo: React.FC = () => {
@@ -52,7 +52,7 @@ const UserInfo: React.FC = () => {
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
     if (avatar || name) {
-      dispatch(uploadUser(avatar as File, name, auth))
+      dispatch(updateUser(avatar as File, name, auth))
     }
 
     if (password && auth.access_token) {

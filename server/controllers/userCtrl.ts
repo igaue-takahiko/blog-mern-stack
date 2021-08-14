@@ -1,4 +1,4 @@
-import { Response } from "express"
+import { Request, Response } from "express"
 import bcrypt from "bcrypt"
 
 import { IReqAuth } from "../config/interface"
@@ -40,6 +40,14 @@ const userCtrl = {
       )
 
       res.json({ msg: "パスワードの再登録が出来ました。" })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  getUser: async (req: Request, res: Response) => {
+    try {
+      const user = await Users.findById(req.params.id).select("-password")
+      res.json(user)
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
