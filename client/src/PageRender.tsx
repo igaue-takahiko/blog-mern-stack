@@ -1,7 +1,7 @@
-import React from 'react'
-import { useParams } from 'react-router-dom';
-import { NotFound } from './components/global';
-import { IParams } from './utils/globalTypes';
+import React from "react"
+import { useParams } from "react-router-dom"
+import { NotFound } from "./components/global"
+import { IParams } from "./utils/globalTypes"
 
 const generatePage = (name: string) => {
   const component = () => require(`./pages/${name}`).default
@@ -16,7 +16,7 @@ const generatePage = (name: string) => {
 const PageRender = () => {
   const { page, slug }: IParams = useParams()
 
-  let name = ''
+  let name = ""
 
   if (page) {
     name = slug ? `${page}/[slug]` : `${page}`

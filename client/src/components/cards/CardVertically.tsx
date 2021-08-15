@@ -35,7 +35,7 @@ const CardVertically: React.FC<IProps> = ({ blog }) => {
             )}
           </small>
           <small className="text-muted">
-            {new Date(blog.createdAt).toLocaleString()}
+            {new Date(blog.createdAt).toLocaleDateString()}
           </small>
         </p>
       </div>
