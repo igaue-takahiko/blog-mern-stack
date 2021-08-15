@@ -57,7 +57,7 @@ const Menu: React.FC = () => {
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
               <Link className="dropdown-item" to={`/profile/${auth.user._id}`}>
-                Profile
+                プロフィール
               </Link>
             </li>
             <li>
@@ -69,7 +69,7 @@ const Menu: React.FC = () => {
                 to="/"
                 onClick={() => dispatch(logout())}
               >
-                Logout
+                ログアウト
               </Link>
             </li>
           </ul>

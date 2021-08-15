@@ -52,6 +52,8 @@ const CreateBlog: React.FC = () => {
     let newData = { ...blog, content: body }
 
     dispatch(createBlog(newData, auth.access_token))
+    setBlog(initialState)
+    setBody("")
   }
 
   if (!auth.access_token) {

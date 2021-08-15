@@ -7,7 +7,8 @@ import alertReducer from "../alert/reducers"
 import categoryReducer from "../category/reducers"
 import homeBlogsReducer from "../homeBlogs/reducers"
 import blogsCategoryReducer from "../blogsCategory/reducers"
-import profileReducer from '../profile/reducers';
+import profileReducer from "../profile/reducers"
+import blogsUserReducer from "../blogsUser/reducers"
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
   homeBlogs: homeBlogsReducer,
   blogsCategory: blogsCategoryReducer,
   profile: profileReducer,
+  blogsUser: blogsUserReducer,
 })
 
 export const store = createStore(

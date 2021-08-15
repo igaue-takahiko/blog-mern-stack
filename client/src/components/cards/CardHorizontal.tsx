@@ -39,14 +39,21 @@ const CardHorizontal: React.FC<IProps> = ({ blog }) => {
         </div>
         <div className="col-md-8 position-relative">
           <div className="card-body">
-            <h5 className="card-title">{blog.title}</h5>
+            <h5 className="card-title">
+              <Link
+                className="text-capitalize text-decoration-none"
+                to={`/blog/${blog._id}`}
+              >
+                {blog.title}
+              </Link>
+            </h5>
             <p className="card-text">{blog.description}</p>
           </div>
-            <p className="card-text position-absolute end-0 bottom-0">
-              <small className="text-muted">
-                {new Date(blog.createdAt).toLocaleDateString()}
-              </small>
-            </p>
+          <p className="card-text position-absolute end-0 bottom-0">
+            <small className="text-muted">
+              {new Date(blog.createdAt).toLocaleDateString()}
+            </small>
+          </p>
         </div>
       </div>
     </div>

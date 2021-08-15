@@ -4,7 +4,8 @@ const initialSate = {
   categories: [],
   homeBlogs: [],
   blogsCategory: [],
-  profile: []
+  profile: [],
+  blogsUser: []
 }
 
 export default initialSate

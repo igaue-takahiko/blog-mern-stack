@@ -22,7 +22,7 @@ const Home: React.FC = () => {
             <>
               <h3>
                 <Link to={`/blogs/${homeBlog.name.toLowerCase()}`}>
-                  {homeBlog.name} <small>( {homeBlog.count} 投稿数)</small>
+                  {homeBlog.name} <small>(投稿数 {homeBlog.count})</small>
                 </Link>
               </h3>
               <hr className="mt-1" />
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
           )}
           {homeBlog.count > 4 && (
             <Link
-              className="text-end d-block mt-2 mb-3"
+              className="text-end d-block mt-2 mb-3 text-decoration-none"
               to={`/blogs/${homeBlog.name}`}
             >
               続きを読む &gt;&gt;

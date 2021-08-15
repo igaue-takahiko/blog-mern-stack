@@ -1,21 +1,22 @@
 import { Dispatch } from "redux"
+
+import { GET_BLOGS_USER_ID, IGetBlogsUserType } from "./types"
 import { ALERT, IAlertType } from "../alert/types"
 import { getAPI } from "../../utils/fetchData"
-import { GET_BLOGS_CATEGORY_ID, IGetBlogsCategoryType } from "./types"
 
-export const getBlogsByCategoryId =
+export const getBlogsByUserId =
   (id: string, search: string) =>
-  async (dispatch: Dispatch<IAlertType | IGetBlogsCategoryType>) => {
+  async (dispatch: Dispatch<IAlertType | IGetBlogsUserType>) => {
     try {
-      let limit = 8
+      let limit = 3
       let value = search ? search : `?page=${1}`
 
       dispatch({ type: ALERT, payload: { loading: true } })
 
-      const res = await getAPI(`blogs/category/${id}${value}&limit=${limit}`)
+      const res = await getAPI(`blogs/user/${id}${value}&limit=${limit}`)
 
       dispatch({
-        type: GET_BLOGS_CATEGORY_ID,
+        type: GET_BLOGS_USER_ID,
         payload: { ...res.data, id, search },
       })
 
