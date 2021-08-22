@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
+import { Link, useHistory } from "react-router-dom"
 
-import { LoginPass, LoginSMS, SocialLogin } from "../components/auth";
-import { RootStore } from "../utils/globalTypes";
+import { LoginPass, LoginSMS, SocialLogin } from "../components/auth"
+import { RootStore } from "../utils/globalTypes"
 
 const Login: React.FC = () => {
-  const history = useHistory();
-  const { auth } = useSelector((state: RootStore) => state);
+  const history = useHistory()
+  const { auth } = useSelector((state: RootStore) => state)
 
-  const [sms, setSms] = useState(false);
+  const [sms, setSms] = useState(false)
 
   useEffect(() => {
     if (auth.access_token) {
-      history.push("/");
+      let url = history.location.search.replace("?", "/")
+      history.push(url)
     }
-  }, [auth.access_token, history]);
+  }, [auth.access_token, history])
 
   return (
     <div className="auth_page">
@@ -35,13 +36,16 @@ const Login: React.FC = () => {
         </small>
         <p>
           アカウントがお持ちでない方は
-          <Link to="/register" style={{ color: "crimson" }}>
+          <Link
+            to={`/register${history.location.search}`}
+            style={{ color: "crimson" }}
+          >
             {"こちら"}
           </Link>
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

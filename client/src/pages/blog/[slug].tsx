@@ -43,7 +43,6 @@ const DetailBlog: React.FC = () => {
     <div className="my-4">
       {error && showErrorMessage(error)}
       {blog && <DisplayBlog blog={blog} />}
-      <h2>コメント欄</h2>
     </div>
   )
 }

@@ -31,7 +31,7 @@ const CardVertically: React.FC<IProps> = ({ blog }) => {
         <p className="card-text d-flex justify-content-between">
           <small className="text-muted text-capitalize">
             {typeof blog.user !== "string" && (
-              <Link to={`/profile/${blog.user._id}`}>By: {blog.user.name}</Link>
+              <Link to={`/profile/${blog.user._id}`}>投稿者: {blog.user.name}</Link>
             )}
           </small>
           <small className="text-muted">
