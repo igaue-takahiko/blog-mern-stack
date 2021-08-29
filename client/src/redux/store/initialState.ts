@@ -5,7 +5,11 @@ const initialSate = {
   homeBlogs: [],
   blogsCategory: [],
   profile: [],
-  blogsUser: []
+  blogsUser: [],
+  comments: {
+    data: [],
+    total: 1,
+  },
 }
 
 export default initialSate

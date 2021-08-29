@@ -6,13 +6,15 @@ import { IBlog, RootStore, IUser, IComment } from "../../utils/globalTypes"
 
 import { Input, Comments } from "../comments"
 
+import { createComment } from '../../redux/comment/actions';
+
 interface IProps {
   blog: IBlog
 }
 
 const DisplayBlog: React.FC<IProps> = ({ blog }) => {
   const dispatch = useDispatch()
-  const { auth } = useSelector((state: RootStore) => state)
+  const { auth, comments } = useSelector((state: RootStore) => state)
 
   const [showComments, setShowComments] = useState<IComment[]>([])
 
@@ -30,7 +32,16 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
     }
 
     setShowComments([data, ...showComments])
+    dispatch(createComment(data, auth.access_token))
   }
+
+  useEffect(() => {
+    if (comments.data.length === 0) {
+      return
+    }
+
+    setShowComments(comments.data)
+  },[comments.data])
 
   return (
     <div>
@@ -59,7 +70,7 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
           してください
         </h5>
       )}
-      {showComments.map((comment, index) => (
+      {showComments?.map((comment, index) => (
         <Comments key={index} comment={comment} />
       ))}
     </div>

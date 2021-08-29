@@ -9,6 +9,7 @@ import homeBlogsReducer from "../homeBlogs/reducers"
 import blogsCategoryReducer from "../blogsCategory/reducers"
 import profileReducer from "../profile/reducers"
 import blogsUserReducer from "../blogsUser/reducers"
+import commentReducer from "../comment/reducers"
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -18,6 +19,7 @@ export const rootReducer = combineReducers({
   blogsCategory: blogsCategoryReducer,
   profile: profileReducer,
   blogsUser: blogsUserReducer,
+  comments: commentReducer,
 })
 
 export const store = createStore(
