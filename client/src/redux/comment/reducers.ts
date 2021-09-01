@@ -11,6 +11,8 @@ const commentReducer = (
         ...state,
         data: [action.payload, ...state.data],
       }
+    case commentTypes.GET_COMMENTS:
+      return action.payload
     default:
       return state
   }
