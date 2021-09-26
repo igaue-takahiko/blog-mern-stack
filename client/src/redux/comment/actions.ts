@@ -8,6 +8,9 @@ import {
   REPLY_COMMENT,
   IGetCommentsType,
   IReplyCommentType,
+  UPDATE_COMMENT,
+  UPDATE_REPLY,
+  IUpdateType,
 } from "./types"
 
 import { IComment } from "../../utils/globalTypes"
@@ -60,6 +63,23 @@ export const replyComment =
           reply_user: data.reply_user,
         },
       })
+    } catch (error: any) {
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+    }
+  }
+
+export const updateComment =
+  (data: IComment, token: string) =>
+  async (dispatch: Dispatch<IAlertType | IUpdateType>) => {
+    console.log(data);
+    
+    try {
+      dispatch({
+        type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
+        payload: data,
+      })
+
+      // const res = await postAPI("comment", data, token)
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }

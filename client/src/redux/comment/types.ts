@@ -3,6 +3,8 @@ import { IComment } from "../../utils/globalTypes"
 export const CREATE_COMMENT = "CREATE_COMMENT"
 export const GET_COMMENTS = "GET_COMMENTS"
 export const REPLY_COMMENT = "REPLY_COMMENT"
+export const UPDATE_COMMENT = "UPDATE_COMMENT"
+export const UPDATE_REPLY = "UPDATE_REPLY"
 
 export interface ICommentState {
   data: IComment[]
@@ -24,7 +26,13 @@ export interface IReplyCommentType {
   payload: IComment
 }
 
+export interface IUpdateType {
+  type: typeof UPDATE_REPLY | typeof UPDATE_COMMENT
+  payload: IComment
+}
+
 export type ICommentType =
   | ICreateCommentType
   | IGetCommentsType
   | IReplyCommentType
+  | IUpdateType

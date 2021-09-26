@@ -25,6 +25,27 @@ const commentReducer = (
             : item,
         ),
       }
+    case commentTypes.UPDATE_COMMENT:
+      return {
+        ...state,
+        data: state.data.map((item) =>
+          item._id === action.payload._id ? action.payload : item,
+        ),
+      }
+    case commentTypes.UPDATE_REPLY:
+      return {
+        ...state,
+        data: state.data.map((item) =>
+          item._id === action.payload.comment_root
+            ? {
+                ...item,
+                replyCM: item.replyCM?.map((rp) =>
+                  rp._id === action.payload._id ? action.payload : rp,
+                ),
+              }
+            : item,
+        ),
+      }
     default:
       return state
   }

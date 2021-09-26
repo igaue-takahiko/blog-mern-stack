@@ -4,7 +4,7 @@ import { IComment, RootStore } from "../../utils/globalTypes"
 
 import Input from "./Input"
 
-import { replyComment } from '../../redux/comment/actions';
+import { replyComment, updateComment } from "../../redux/comment/actions"
 
 interface IProps {
   comment: IComment
@@ -22,6 +22,7 @@ const CommentList: React.FC<IProps> = ({
   const { auth } = useSelector((state: RootStore) => state)
 
   const [onReply, setOnReply] = useState(false)
+  const [edit, setEdit] = useState<IComment>()
 
   const handleReply = (body: string) => {
     if (!auth.user || !auth.access_token) {
@@ -43,26 +44,66 @@ const CommentList: React.FC<IProps> = ({
     setOnReply(false)
   }
 
+  const handleUpdate = (body: string) => {
+    if (!auth.user || !auth.access_token || !edit) {
+      return
+    }
+
+    if (body === edit?.content) {
+      return setEdit(undefined)
+    }
+
+    const newComment = {...edit, content: body}
+    dispatch(updateComment(newComment, auth.access_token))
+    setEdit(undefined)
+  }
+
+  const Nav = (comment: IComment) => {
+    return (
+      <div>
+        <i className="fas fa-trash-alt mx-2" />
+        <i className="fas fa-edit me-2" onClick={() => setEdit(comment)} />
+      </div>
+    )
+  }
+
   return (
     <div className="w-100">
-      <div className="comment_box">
-        <div
-          className="p-2"
-          dangerouslySetInnerHTML={{ __html: comment.content }}
-        />
-        <div className="p-2 d-flex justify-content-between">
-          <small
-            style={{ cursor: "pointer" }}
-            onClick={() => setOnReply(!onReply)}
-          >
-            {onReply ? "- キャンセル -" : "- 返信 -"}
-          </small>
-          <small className="m-2">
-            {new Date(comment.createdAt).toLocaleDateString()}
-          </small>
+      {edit ? (
+        <Input callback={handleUpdate} edit={edit} setEdit={setEdit} />
+      ) : (
+        <div className="comment_box">
+          <div
+            className="p-2"
+            dangerouslySetInnerHTML={{ __html: comment.content }}
+          />
+          <div className="p-2 d-flex justify-content-between">
+            <small
+              style={{ cursor: "pointer" }}
+              onClick={() => setOnReply(!onReply)}
+            >
+              {onReply ? "- キャンセル -" : "- 返信 -"}
+            </small>
+            <small className="d-flex">
+              <div style={{ cursor: "pointer" }}>
+                {comment.blog_user_id === auth.user?._id ? (
+                  comment.user._id === auth.user._id ? (
+                    Nav(comment)
+                  ) : (
+                    <i className="fas fa-trash-alt mx-2"></i>
+                  )
+                ) : (
+                  comment.user._id === auth.user?._id && Nav(comment)
+                )}
+              </div>
+              <div>{new Date(comment.createdAt).toLocaleDateString()}</div>
+            </small>
+          </div>
         </div>
-      </div>
+      )}
+
       {onReply && <Input callback={handleReply} />}
+
       {children}
     </div>
   )

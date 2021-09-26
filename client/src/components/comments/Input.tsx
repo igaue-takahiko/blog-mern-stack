@@ -1,19 +1,32 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
+
+import { IComment } from "../../utils/globalTypes"
 import { LiteQuill } from "../editor"
 
 interface IProps {
   callback: (body: string) => void
+  edit?: IComment
+  setEdit?: (edit?: IComment) => void
 }
 
-const Input: React.FC<IProps> = ({ callback }) => {
+const Input: React.FC<IProps> = ({ callback, edit, setEdit }) => {
   const divRef = useRef<HTMLDivElement>(null)
 
   const [body, setBody] = useState("")
+
+  useEffect(() => {
+    if (edit) {
+      setBody(edit.content)
+    }
+  }, [edit, setEdit])
 
   const handleSubmit = () => {
     const div = divRef.current
     const text = div?.innerText as string
     if (!text.trim()) {
+      if (setEdit) {
+        return setEdit(undefined)
+      }
       return
     }
 
@@ -33,7 +46,7 @@ const Input: React.FC<IProps> = ({ callback }) => {
         className="btn btn-dark ms-auto d-block px-4 mt-2"
         onClick={handleSubmit}
       >
-        送信する
+        {edit ? '更新する' : '送信する'}
       </button>
     </div>
   )
