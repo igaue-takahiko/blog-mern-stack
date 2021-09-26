@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 
 import { IBlog, RootStore, IUser, IComment } from "../../utils/globalTypes"
 
 import { Input, Comments } from "../comments"
-import { SpinnerLoading } from "../global"
+import { SpinnerLoading, Pagination } from "../global"
 
 import { createComment, getComments } from "../../redux/comment/actions"
 
@@ -15,6 +15,7 @@ interface IProps {
 
 const DisplayBlog: React.FC<IProps> = ({ blog }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const { auth, comments } = useSelector((state: RootStore) => state)
 
   const [showComments, setShowComments] = useState<IComment[]>([])
@@ -38,31 +39,40 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
   }
 
   useEffect(() => {
-    if (comments.data.length === 0) {
-      return
-    }
-
     setShowComments(comments.data)
   }, [comments.data])
 
-  const fetchComments = useCallback((id: string) => {
-    setLoading(true)
-    dispatch(getComments(id))
-    setLoading(false)
-  }, [dispatch])
+  const fetchComments = useCallback(
+    (id: string, num = 1) => {
+      setLoading(true)
+      dispatch(getComments(id, num))
+      setLoading(false)
+    },
+    [dispatch],
+  )
 
   useEffect(() => {
     if (!blog._id) {
       return
     }
 
-    fetchComments(blog._id)
-  }, [blog._id, fetchComments])
+    const num = history.location.search.slice(6) || 1
+
+    fetchComments(blog._id, num)
+  }, [blog._id, fetchComments, history.location.search])
+
+  const handlePagination = (num: number) => {
+    if (!blog._id) {
+      return
+    }
+
+    fetchComments(blog._id, num)
+  }
 
   return (
     <div>
       <h2
-        className="text-center my-3 text-capitalize fs-1"
+        className="my-3 text-center text-capitalize fs-1"
         style={{ color: "#ff7a00" }}
       >
         {blog.title}
@@ -82,16 +92,22 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
         <Input callback={handleComment} />
       ) : (
         <h5>
-          コメントを書くには<Link to={`/login?blog/${blog._id}`}>ログイン</Link>
+          コメントを書くには
+          <Link to={`/login?blog/${blog._id}`}>ログイン</Link>
           してください
         </h5>
       )}
+
       {loading ? (
         <SpinnerLoading />
       ) : (
         showComments?.map((comment, index) => (
           <Comments key={index} comment={comment} />
         ))
+      )}
+
+      {comments.total > 1 && (
+        <Pagination total={comments.total} callback={handlePagination} />
       )}
     </div>
   )

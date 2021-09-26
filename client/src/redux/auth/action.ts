@@ -55,7 +55,7 @@ export const refreshToken =
       dispatch({ type: AUTH, payload: res.data })
 
       dispatch({ type: ALERT, payload: {} })
-    } catch (error) {
+    } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
@@ -64,9 +64,9 @@ export const logout =
   () => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     try {
       localStorage.removeItem("logged")
+      dispatch({ type: AUTH, payload: {} })
       await getAPI("logout")
-      window.location.href = "/"
-    } catch (error) {
+    } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
@@ -82,7 +82,7 @@ export const googleLogin =
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
       localStorage.setItem("logged", "t.i-blog")
-    } catch (error) {
+    } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
@@ -99,7 +99,7 @@ export const facebookLogin =
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
       localStorage.setItem("logged", "t.i-blog")
-    } catch (error) {
+    } catch (error:any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
@@ -121,7 +121,7 @@ export const loginSMS =
       if (!res.data.valid) {
         verifySMS(phone, dispatch)
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }
@@ -142,7 +142,7 @@ export const verifySMS = async (
 
     dispatch({ type: ALERT, payload: { success: res.data.msg } })
     localStorage.setItem("logged", "t.i-blog")
-  } catch (error) {
+  } catch (error: any) {
     dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     setTimeout(() => {
       verifySMS(phone, dispatch)
