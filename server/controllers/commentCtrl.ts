@@ -152,6 +152,31 @@ const commentCtrl = {
       return res.status(500).json({ msg: error.message })
     }
   },
+  updateComment: async (req: IReqAuth, res: Response) => {
+    if (!req.user) {
+      return res.status(400).json({ msg: "無効な認証です。" })
+    }
+
+    try {
+      const { content } = req.body
+
+      const comment = await Comments.findOneAndUpdate(
+        {
+          _id: req.params.id,
+          user: req.user.id,
+        },
+        { content },
+      )
+
+      if (!comment) {
+        return res.status(500).json({ msg: "コメントが表示されません。" })
+      }
+
+      return res.json({ msg: "アップデートが完了しました。" })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
 }
 
 export default commentCtrl

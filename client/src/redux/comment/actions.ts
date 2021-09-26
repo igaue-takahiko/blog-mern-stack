@@ -14,7 +14,7 @@ import {
 } from "./types"
 
 import { IComment } from "../../utils/globalTypes"
-import { postAPI, getAPI } from "../../utils/fetchData"
+import { postAPI, getAPI, patchAPI } from "../../utils/fetchData"
 
 export const createComment =
   (data: IComment, token: string) =>
@@ -71,15 +71,19 @@ export const replyComment =
 export const updateComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | IUpdateType>) => {
-    console.log(data);
-    
     try {
+      dispatch({ type: ALERT, payload: { loading: true } })
+
       dispatch({
         type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
         payload: data,
       })
 
-      // const res = await postAPI("comment", data, token)
+      const res = await patchAPI(`comment/${data._id}`, { content: data.content }, token)
+
+      dispatch({ type: ALERT, payload: { loading: false } })
+
+      dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
