@@ -13,6 +13,18 @@ const commentReducer = (
       }
     case commentTypes.GET_COMMENTS:
       return action.payload
+    case commentTypes.REPLY_COMMENT:
+      return {
+        ...state,
+        data: state.data.map((item) =>
+          item._id === action.payload.comment_root
+            ? {
+                ...item,
+                replyCM: [...(item.replyCM as []), action.payload],
+              }
+            : item,
+        ),
+      }
     default:
       return state
   }

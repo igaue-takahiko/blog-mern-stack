@@ -12,7 +12,7 @@ const AvatarReply: React.FC<IProps> = ({ user, reply_user }) => {
   return (
     <div className="avatar_reply">
       <img src={user.avatar} alt="avatar" />
-      <div>
+      <div className="ms-1">
         <small>
           <Link to={`/profile/${user._id}`} style={{ textDecoration: "none" }}>
             {user.name}

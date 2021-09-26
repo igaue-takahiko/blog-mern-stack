@@ -4,6 +4,8 @@ import { IComment, RootStore } from "../../utils/globalTypes"
 
 import Input from "./Input"
 
+import { replyComment } from '../../redux/comment/actions';
+
 interface IProps {
   comment: IComment
   showReply: IComment[]
@@ -35,8 +37,9 @@ const CommentList: React.FC<IProps> = ({
       comment_root: comment._id,
       createdAt: new Date().toISOString(),
     }
-    console.log(data)
+
     setShowReply([...showReply, data])
+    dispatch(replyComment(data, auth.access_token))
     setOnReply(false)
   }
 
