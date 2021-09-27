@@ -40,7 +40,7 @@ const commentReducer = (
             ? {
                 ...item,
                 replyCM: item.replyCM?.map((rp) =>
-                  rp._id !== action.payload._id ? action.payload : rp,
+                  rp._id === action.payload._id ? action.payload : rp,
                 ),
               }
             : item,
