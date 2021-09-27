@@ -46,6 +46,25 @@ const commentReducer = (
             : item,
         ),
       }
+    case commentTypes.DELETE_COMMENT:
+      return {
+        ...state,
+        data: state.data.filter((item) => item._id === action.payload._id),
+      }
+    case commentTypes.DELETE_REPLY:
+      return {
+        ...state,
+        data: state.data.map((item) =>
+          item._id === action.payload.comment_root
+            ? {
+                ...item,
+                replyCM: item.replyCM?.filter(
+                  (rp) => rp._id !== action.payload._id,
+                ),
+              }
+            : item,
+        ),
+      }
     default:
       return state
   }
