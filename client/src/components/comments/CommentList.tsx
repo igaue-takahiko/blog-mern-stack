@@ -98,8 +98,9 @@ const CommentList: React.FC<IProps> = ({
             >
               {onReply ? "- キャンセル -" : "- 返信 -"}
             </small>
+
             <small className="d-flex">
-              <div style={{ cursor: "pointer" }}>
+              <div className="comment_nav">
                 {comment.blog_user_id === auth.user?._id ? (
                   comment.user._id === auth.user._id ? (
                     Nav(comment)
