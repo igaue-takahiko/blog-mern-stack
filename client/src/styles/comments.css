@@ -29,7 +29,7 @@
   padding: 4px;
 }
 
-.avatar_reply{
+.avatar_reply {
   display: flex;
   align-items: center;
   margin-bottom: 0.25rem;
@@ -45,5 +45,17 @@
 .avatar_reply .reply_text {
   display: block;
   opacity: 0.5;
-  font-size: 11px;
+  font-size: 16px;
+}
+
+.comment_box .comment_nav {
+  cursor: pointer;
+  display: none;
+}
+
+.comment_box:hover .comment_nav {
+  display: block;
+}
+.comment_box .comment_nav i:hover {
+  color: crimson;
 }

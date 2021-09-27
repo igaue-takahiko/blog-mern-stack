@@ -169,10 +169,43 @@ const commentCtrl = {
       )
 
       if (!comment) {
-        return res.status(500).json({ msg: "コメントが表示されません。" })
+        return res.status(400).json({ msg: "コメントが表示されません。" })
       }
 
       return res.json({ msg: "アップデートが完了しました。" })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  deleteComment: async (req: IReqAuth, res: Response) => {
+    if (!req.user) {
+      return res.status(400).json({ msg: "無効な認証です。" })
+    }
+
+    try {
+      const comment = await Comments.findOneAndDelete({
+        _id: req.params.id,
+        $or: [{ user: req.user._id }, { blog_user_id: req.user._id }],
+      })
+
+      if (!comment) {
+        return res.status(400).json({ msg: "コメントがありません。" })
+      }
+
+      if (comment.comment_root) {
+        // update replyCM
+        await Comments.findOneAndUpdate(
+          { _id: comment.comment_root },
+          {
+            $pull: { replyCM: comment._id },
+          },
+        )
+      } else {
+        // delete all comments in replyCM
+        await Comments.deleteMany({ _id: { $in: comment.replyCM } })
+      }
+
+      return res.json({ msg: "削除が完了しました。" })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }

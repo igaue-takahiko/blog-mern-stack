@@ -11,10 +11,13 @@ import {
   UPDATE_COMMENT,
   UPDATE_REPLY,
   IUpdateType,
+  DELETE_COMMENT,
+  DELETE_REPLY,
+  IDeleteType,
 } from "./types"
 
 import { IComment } from "../../utils/globalTypes"
-import { postAPI, getAPI, patchAPI } from "../../utils/fetchData"
+import { postAPI, getAPI, patchAPI, deleteAPI } from "../../utils/fetchData"
 
 export const createComment =
   (data: IComment, token: string) =>
@@ -79,9 +82,30 @@ export const updateComment =
         payload: data,
       })
 
-      const res = await patchAPI(`comment/${data._id}`, { content: data.content }, token)
+      const res = await patchAPI(
+        `comment/${data._id}`,
+        { content: data.content },
+        token,
+      )
 
       dispatch({ type: ALERT, payload: { loading: false } })
+
+      dispatch({ type: ALERT, payload: { success: res.data.msg } })
+    } catch (error: any) {
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+    }
+  }
+
+export const deleteComment =
+  (data: IComment, token: string) =>
+  async (dispatch: Dispatch<IAlertType | IDeleteType>) => {
+    try {
+      dispatch({
+        type: data.comment_root ? DELETE_REPLY : DELETE_COMMENT,
+        payload: data,
+      })
+
+      const res = await deleteAPI(`comment/${data._id}`, token)
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {
