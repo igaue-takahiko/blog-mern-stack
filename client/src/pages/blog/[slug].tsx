@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 
-import { IParams, IBlog } from "../../utils/globalTypes"
+import { IParams, IBlog, RootStore } from "../../utils/globalTypes"
 import { getAPI } from "../../utils/fetchData"
 
 import { SpinnerLoading } from "../../components/global"
@@ -10,6 +11,7 @@ import { showErrorMessage } from "../../components/alert/Alert"
 
 const DetailBlog: React.FC = () => {
   const id = useParams<IParams>().slug
+  const { socket } = useSelector((state: RootStore) => state)
 
   const [blog, setBlog] = useState<IBlog>()
   const [loading, setLoading] = useState(false)
@@ -34,6 +36,19 @@ const DetailBlog: React.FC = () => {
 
     return () => setBlog(undefined)
   }, [id])
+
+  // Join Room
+  useEffect(() => {
+    if (!id || !socket) {
+      return
+    }
+
+    socket.emit("joinRoom", id)
+
+    return () => {
+      socket.emit("outRoom", id)
+    }
+  }, [id, socket])
 
   if (loading) {
     return <SpinnerLoading />

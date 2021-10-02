@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { Route, Switch } from "react-router-dom"
+import io from "socket.io-client"
 
 import PageRender from "./PageRender"
 import { Header, Footer } from "./components/global"
@@ -13,9 +14,18 @@ const App: React.FC = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getHomeBlogs())
-    dispatch(refreshToken())
     dispatch(getCategories())
+    dispatch(refreshToken())
+    dispatch(getHomeBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    const socket = io()
+    dispatch({ type: "SOCKET", payload: socket })
+
+    return () => {
+      socket.close()
+    }
   }, [dispatch])
 
   return (

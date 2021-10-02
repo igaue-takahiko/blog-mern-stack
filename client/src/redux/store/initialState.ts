@@ -10,6 +10,7 @@ const initialSate = {
     data: [],
     total: 1,
   },
+  socket: null,
 }
 
 export default initialSate
