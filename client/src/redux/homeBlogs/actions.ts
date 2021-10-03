@@ -3,7 +3,7 @@ import { IBlog } from "../../utils/globalTypes"
 import { ALERT, IAlertType } from "../alert/types"
 import { GET_HOME_BLOGS, IGetHomeBlogsType } from "./types"
 import { imageUpload } from "../../utils/ImageUpload"
-import { postAPI, getAPI } from "../../utils/fetchData"
+import { postAPI, getAPI, putAPI } from "../../utils/fetchData"
 
 export const createBlog =
   (blog: IBlog, token: string) => async (dispatch: Dispatch<IAlertType>) => {
@@ -39,6 +39,30 @@ export const getHomeBlogs =
       dispatch({ type: GET_HOME_BLOGS, payload: res.data })
 
       dispatch({ type: ALERT, payload: { loading: false } })
+    } catch (error: any) {
+      dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+    }
+  }
+
+export const updateBlog =
+  (blog: IBlog, token: string) => async (dispatch: Dispatch<IAlertType>) => {
+    let url
+
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } })
+
+      if (typeof blog.thumbnail !== "string") {
+        const photo = await imageUpload(blog.thumbnail)
+        url = photo.url
+      } else {
+        url = blog.thumbnail
+      }
+
+      const newBlog = { ...blog, thumbnail: url }
+
+      const res = await putAPI(`blog/${newBlog._id}`, newBlog, token)
+
+      dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }

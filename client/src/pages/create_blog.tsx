@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { RootStore, IBlog } from "../utils/globalTypes"
+import { RootStore, IBlog, IUser } from "../utils/globalTypes"
 import { ALERT } from "../redux/alert/types"
-import { createBlog } from "../redux/homeBlogs/actions"
-import { validCreateBlog } from "../utils/valid"
+import { createBlog, updateBlog } from "../redux/homeBlogs/actions"
+import { validCreateBlog, shallowEqual } from "../utils/valid"
 
 import { NotFound } from "../components/global"
 import { CardHorizontal, CreateForm } from "../components/cards"
 import { ReactQuill } from "../components/editor"
+import { getAPI } from "../utils/fetchData"
+
+interface IProps {
+  id?: string
+}
 
 const initialState = {
   user: "",
@@ -20,7 +25,7 @@ const initialState = {
   createdAt: new Date().toISOString(),
 }
 
-const CreateBlog: React.FC = () => {
+const CreateBlog: React.FC<IProps> = ({ id }) => {
   const dispatch = useDispatch()
   const divRef = useRef<HTMLDivElement>(null)
   const { auth } = useSelector((state: RootStore) => state)
@@ -28,6 +33,29 @@ const CreateBlog: React.FC = () => {
   const [blog, setBlog] = useState<IBlog>(initialState)
   const [body, setBody] = useState("")
   const [text, setText] = useState("")
+  const [oldData, setOldData] = useState<IBlog>(initialState)
+
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+
+    getAPI(`blog/${id}`)
+      .then((res) => {
+        setBlog(res.data)
+        setBody(res.data.content)
+        setOldData(initialState)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+    return () => {
+      setBlog(initialState)
+      setBody("")
+      setOldData(initialState)
+    }
+  }, [id])
 
   useEffect(() => {
     const div = divRef.current
@@ -51,7 +79,27 @@ const CreateBlog: React.FC = () => {
 
     let newData = { ...blog, content: body }
 
-    dispatch(createBlog(newData, auth.access_token))
+    if (id) {
+      if ((blog.user as IUser)._id !== auth.user?._id) {
+        return dispatch({
+          type: ALERT,
+          payload: { errors: "無効な認証です。" },
+        })
+      }
+
+      const result = shallowEqual(oldData, newData)
+      if (result) {
+        return dispatch({
+          type: ALERT,
+          payload: { errors: "データは更新されません。" },
+        })
+      }
+
+      dispatch(updateBlog(newData, auth.access_token))
+    } else {
+      dispatch(createBlog(newData, auth.access_token))
+    }
+
     setBlog(initialState)
     setBody("")
   }
@@ -72,7 +120,7 @@ const CreateBlog: React.FC = () => {
           <CardHorizontal blog={blog} />
         </div>
       </div>
-      <ReactQuill setBody={setBody} />
+      <ReactQuill setBody={setBody} body={body} />
       <div
         ref={divRef}
         dangerouslySetInnerHTML={{
@@ -86,7 +134,7 @@ const CreateBlog: React.FC = () => {
         className="btn btn-dark mt-3 d-block mx-auto"
         onClick={handleSubmit}
       >
-        登録する
+        {id ? "アップデート" : "登録する"}
       </button>
     </div>
   )

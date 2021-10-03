@@ -239,6 +239,29 @@ const blogCtrl = {
       return res.status(500).json({ msg: error.message })
     }
   },
+  updateBlog: async (req: IReqAuth, res: Response) => {
+    if (!req.user) {
+      return res.status(400).json({ msg: "無効な承認です。" })
+    }
+
+    try {
+      const blog = await Blogs.findOneAndUpdate(
+        {
+          _id: req.params.id,
+          user: req.user._id,
+        },
+        req.body,
+      )
+
+      if (!blog) {
+        return res.status(400).json({ msg: "無効な承認です。" })
+      }
+
+      return res.json({ msg: "アップデートが完了しました。", blog })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
 }
 
 export default blogCtrl

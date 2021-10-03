@@ -1,13 +1,17 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { Link, useParams } from "react-router-dom"
 
-import { IBlog } from "../../utils/globalTypes"
+import { IBlog, IParams, IUser, RootStore } from "../../utils/globalTypes"
 
 interface IProps {
   blog: IBlog
 }
 
 const CardHorizontal: React.FC<IProps> = ({ blog }) => {
+  const { slug } = useParams<IParams>()
+  const { auth } = useSelector((state: RootStore) => state)
+
   return (
     <div className="card mb-3" style={{ minWidth: "280px" }}>
       <div className="row g-0 p-2">
@@ -48,12 +52,19 @@ const CardHorizontal: React.FC<IProps> = ({ blog }) => {
               </Link>
             </h5>
             <p className="card-text">{blog.description}</p>
+            {blog.title && (
+              <p className="card-text d-flex justify-content-between">
+                {slug && (blog.user as IUser)._id === auth.user?._id && (
+                  <small>
+                    <Link to={`/update_blog/${blog._id}`}>アップデート</Link>
+                  </small>
+                )}
+                <small className="text-muted">
+                  {new Date(blog.createdAt).toLocaleDateString()}
+                </small>
+              </p>
+            )}
           </div>
-          <p className="card-text position-absolute end-0 bottom-0">
-            <small className="text-muted">
-              {new Date(blog.createdAt).toLocaleDateString()}
-            </small>
-          </p>
         </div>
       </div>
     </div>
