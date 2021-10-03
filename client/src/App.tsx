@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom"
 import io from "socket.io-client"
 
 import PageRender from "./PageRender"
+import SocketClient from "./SocketClient"
 import { Header, Footer } from "./components/global"
 import { Alert } from "./components/alert/Alert"
 import { refreshToken } from "./redux/auth/action"
@@ -30,6 +31,7 @@ const App: React.FC = () => {
 
   return (
     <>
+      <SocketClient />
       <Header />
       <div className="container">
         <Alert />

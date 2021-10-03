@@ -2,10 +2,8 @@ import { Dispatch } from "redux"
 
 import { ALERT, IAlertType } from "../alert/types"
 import {
-  CREATE_COMMENT,
   ICreateCommentType,
   GET_COMMENTS,
-  REPLY_COMMENT,
   IGetCommentsType,
   IReplyCommentType,
   UPDATE_COMMENT,
@@ -25,10 +23,6 @@ export const createComment =
     try {
       const res = await postAPI("comment", data, token)
 
-      dispatch({
-        type: CREATE_COMMENT,
-        payload: { ...res.data, user: data.user },
-      })
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
@@ -56,16 +50,8 @@ export const replyComment =
   (data: IComment, token: string) =>
   async (dispatch: Dispatch<IAlertType | IReplyCommentType>) => {
     try {
-      const res = await postAPI("reply_comment", data, token)
+      await postAPI("reply_comment", data, token)
 
-      dispatch({
-        type: REPLY_COMMENT,
-        payload: {
-          ...res.data,
-          user: data.user,
-          reply_user: data.reply_user,
-        },
-      })
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
@@ -82,11 +68,7 @@ export const updateComment =
         payload: data,
       })
 
-      const res = await patchAPI(
-        `comment/${data._id}`,
-        { content: data.content },
-        token,
-      )
+      const res = await patchAPI(`comment/${data._id}`, { data }, token)
 
       dispatch({ type: ALERT, payload: { loading: false } })
 

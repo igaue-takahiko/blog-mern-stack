@@ -17,7 +17,7 @@ const auth = async (req: IReqAuth, res: Response, next: NextFunction) => {
       return res.status(400).json({ msg: "無効な認証。" })
     }
 
-    const user = await Users.findOne({ _id: decoded.id })
+    const user = await Users.findOne({ _id: decoded.id }).select("-password")
     if (!user) {
       return res.status(400).json({ msg: "ユーザーアカウントが存在しません。" })
     }
