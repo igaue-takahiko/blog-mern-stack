@@ -5,7 +5,10 @@ import Menu from "./Menu"
 
 const Header: React.FC = () => {
   return (
-    <nav className="p-3 shadow navbar navbar-expand-lg navbar-light bg-light position-sticky top-0" style={{ zIndex: 2 }}>
+    <nav
+      className="p-3 shadow navbar navbar-expand-lg navbar-light bg-light position-sticky top-0"
+      style={{ position: "sticky", left: 0, zIndex: 9 }}
+    >
       <Link className="navbar-brand" to="/">
         T.I blog
       </Link>

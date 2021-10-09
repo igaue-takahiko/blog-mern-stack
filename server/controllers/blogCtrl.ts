@@ -286,6 +286,39 @@ const blogCtrl = {
       return res.status(500).json({ msg: error.message })
     }
   },
+  searchBlogs: async (req: Request, res: Response) => {
+    try {
+      const blogs = await Blogs.aggregate([
+        {
+          $search: {
+            index: "searchTitle",
+            autocomplete: {
+              query: `${req.query.title}`,
+              path: "title",
+            },
+          },
+        },
+        { $sort: { createdAt: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            title: 1,
+            description: 1,
+            thumbnail: 1,
+            createdAt: 1,
+          },
+        },
+      ])
+
+      if (!blogs.length) {
+        return res.status(400).json({ msg: "投稿がありません" })
+      }
+
+      res.json(blogs)
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
 }
 
 export default blogCtrl
