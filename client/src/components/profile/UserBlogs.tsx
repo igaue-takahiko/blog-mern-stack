@@ -49,7 +49,7 @@ const UserBlogs: React.FC = () => {
     return <SpinnerLoading />
   }
 
-  if (blogs.length === 0) {
+  if (blogs.length === 0 && total < 1) {
     return <h3 className="text-center">投稿がありません</h3>
   }
 
@@ -61,7 +61,7 @@ const UserBlogs: React.FC = () => {
         ))}
       </div>
       <div>
-        {total > 1 && <Pagination total={total} callback={handlePagination} />}
+        <Pagination total={total} callback={handlePagination} />
       </div>
     </div>
   )

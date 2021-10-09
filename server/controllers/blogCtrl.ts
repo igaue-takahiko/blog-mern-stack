@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import mongoose from "mongoose"
 import Blogs from "../models/blogModel"
+import Comments from "../models/commentModel"
 import { IReqAuth } from "../config/interface"
 
 const Pagination = (req: IReqAuth) => {
@@ -258,6 +259,29 @@ const blogCtrl = {
       }
 
       return res.json({ msg: "アップデートが完了しました。", blog })
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
+  deleteBlog: async (req: IReqAuth, res: Response) => {
+    if (!req.user) {
+      return res.status(400).json({ msg: "無効な承認です。" })
+    }
+
+    try {
+      const blog = await Blogs.findOneAndDelete({
+        _id: req.params.id,
+        user: req.user._id,
+      })
+
+      if (!blog) {
+        return res.status(400).json({ msg: "無効な承認です。" })
+      }
+
+      // Delete Comments
+      await Comments.deleteMany({ blog_id: blog._id })
+
+      res.json({ msg: "削除が完了しました。" })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }

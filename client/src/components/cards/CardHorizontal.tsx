@@ -1,16 +1,33 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { Link, useParams } from "react-router-dom"
 
-import { IBlog, IParams, IUser, RootStore } from "../../utils/globalTypes"
+import { IBlog, IParams, RootStore } from "../../utils/globalTypes"
+import { ALERT } from "../../redux/alert/types"
+import { deleteBlog } from "../../redux/blogsUser/actions"
 
 interface IProps {
   blog: IBlog
 }
 
 const CardHorizontal: React.FC<IProps> = ({ blog }) => {
+  const dispatch = useDispatch()
   const { slug } = useParams<IParams>()
   const { auth } = useSelector((state: RootStore) => state)
+
+  const handleDelete = () => {
+    if (!auth.user || !auth.access_token) {
+      return
+    }
+
+    if (slug !== auth.user._id) {
+      return dispatch({ type: ALERT, payload: { errors: "無効な認証です。" } })
+    }
+
+    if (window.confirm("この投稿を削除しますか？")) {
+      dispatch(deleteBlog(blog, auth.access_token))
+    }
+  }
 
   return (
     <div className="card mb-3" style={{ minWidth: "280px" }}>
@@ -53,16 +70,23 @@ const CardHorizontal: React.FC<IProps> = ({ blog }) => {
             </h5>
             <p className="card-text">{blog.description}</p>
             {blog.title && (
-              <p className="card-text d-flex justify-content-between">
-                {slug && (blog.user as IUser)._id === auth.user?._id && (
-                  <small>
-                    <Link to={`/update_blog/${blog._id}`}>アップデート</Link>
-                  </small>
+              <div className="card-text d-flex justify-content-between align-items-center">
+                {slug === auth.user?._id && (
+                  <div style={{ cursor: "pointer" }}>
+                    <Link to={`/update_blog/${blog._id}`}>
+                      <i className="fas fa-edit" title="edit" />
+                    </Link>
+                    <i
+                      className="fas fa-trash text-danger mx-3"
+                      title="edit"
+                      onClick={handleDelete}
+                    />
+                  </div>
                 )}
                 <small className="text-muted">
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </small>
-              </p>
+              </div>
             )}
           </div>
         </div>
