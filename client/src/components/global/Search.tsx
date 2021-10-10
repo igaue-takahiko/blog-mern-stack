@@ -36,7 +36,7 @@ const Search: React.FC = () => {
   }, [pathname])
 
   return (
-    <div className="search position-relative me-4" style={{ width: "70%" }}>
+    <div className="search position-relative me-4">
       <input
         type="text"
         className="form-control me-2 w-100"

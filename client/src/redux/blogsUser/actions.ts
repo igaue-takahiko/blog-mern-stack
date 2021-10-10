@@ -3,6 +3,7 @@ import { Dispatch } from "redux"
 import { IBlog } from "../../utils/globalTypes"
 import { ALERT, IAlertType } from "../alert/types"
 import { getAPI, deleteAPI } from "../../utils/fetchData"
+import { checkTokenExp } from "../../utils/checkTokenExp"
 import {
   GET_BLOGS_USER_ID,
   DELETE_BLOGS_USER_ID,
@@ -35,13 +36,19 @@ export const getBlogsByUserId =
 export const deleteBlog =
   (blog: IBlog, token: string) =>
   async (dispatch: Dispatch<IAlertType | IDeleteBlogsUserType>) => {
+    const result = await checkTokenExp(token, dispatch)
+    const access_token = result ? result : token
+
     try {
+      dispatch({ type: ALERT, payload: { loading: true } })
+      const res = await deleteAPI(`blog/${blog._id}`, access_token)
+
       dispatch({
         type: DELETE_BLOGS_USER_ID,
         payload: blog,
       })
 
-      const res = await deleteAPI(`blog/${blog._id}`, token)
+      dispatch({ type: ALERT, payload: { loading: false } })
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (err: any) {

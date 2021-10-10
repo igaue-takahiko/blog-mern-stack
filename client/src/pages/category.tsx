@@ -49,7 +49,9 @@ const Category: React.FC = () => {
       return
     }
 
-    dispatch(deleteCategory(id, auth.access_token))
+    if(window.confirm('このカテゴリを削除してもよろしいですか？')){
+      dispatch(deleteCategory(id, auth.access_token))
+    }
   }
 
   if (auth.user?.role !== "admin") {

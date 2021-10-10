@@ -16,7 +16,7 @@ const Menu: React.FC = () => {
 
   const afLoginLinks = [
     { label: "ホーム", path: "/" },
-    { label: "ブログ", path: "/create_blog" },
+    { label: "ブログ作成", path: "/create_blog" },
   ]
 
   const navLinks = auth.access_token ? afLoginLinks : bfLoginLinks
@@ -25,6 +25,14 @@ const Menu: React.FC = () => {
     if (pn === pathname) {
       return "active"
     }
+  }
+
+  const handleLogout = () => {
+    if (!auth.access_token) {
+      return
+    }
+
+    dispatch(logout(auth.access_token))
   }
 
   return (
@@ -67,7 +75,7 @@ const Menu: React.FC = () => {
               <Link
                 className="dropdown-item"
                 to="/"
-                onClick={() => dispatch(logout())}
+                onClick={handleLogout}
               >
                 ログアウト
               </Link>

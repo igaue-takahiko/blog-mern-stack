@@ -18,6 +18,7 @@ import {
   IUser,
   IGooglePayload,
   IUserParams,
+  IReqAuth,
 } from "../config/interface"
 
 const CLIENT_URL = `${process.env.BASE_URL}`
@@ -102,15 +103,22 @@ const authCtrl = {
       }
 
       loginUser(user, password, res)
-    } catch (error) {
+    } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
   },
-  logout: async (req: Request, res: Response) => {
+  logout: async (req: IReqAuth, res: Response) => {
     try {
       res.clearCookie("refresh_token", { path: `/api/refresh_token` })
 
-      return res.json({ msg: "ログアウトしました!" })
+      await Users.findOneAndUpdate(
+        { _id: req.user?._id },
+        {
+          rf_token: "",
+        },
+      )
+
+      return res.json({ msg: "ログアウトが完了しました!" })
     } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
@@ -129,12 +137,26 @@ const authCtrl = {
         return res.status(400).json({ msg: "今すぐログインしてください！" })
       }
 
-      const user = await Users.findById(decoded.id).select("-password")
+      const user = await Users.findById(decoded.id).select(
+        "-password +rf_token",
+      )
       if (!user) {
         return res.status(400).json({ msg: "そのアカウントは存在しません。" })
       }
 
+      if (rf_token !== user.rf_token) {
+        return res.status(400).json({ msg: "今すぐログインしてくだい！" })
+      }
+
       const access_token = generateAccessToken({ id: user._id })
+      const refresh_token = generateRefreshToken({ id: user._id }, res)
+
+      await Users.findOneAndUpdate(
+        { _id: user._id },
+        {
+          rf_token: refresh_token,
+        },
+      )
 
       res.json({ access_token, user })
     } catch (error: any) {
@@ -174,7 +196,7 @@ const authCtrl = {
         }
         registerUser(user, res)
       }
-    } catch (error) {
+    } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
   },
@@ -209,7 +231,7 @@ const authCtrl = {
         }
         registerUser(user, res)
       }
-    } catch (error) {
+    } catch (error: any) {
       return res.status(500).json({ msg: error.message })
     }
   },
@@ -266,16 +288,17 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
   }
 
   const access_token = generateAccessToken({ id: user._id })
-  const refresh_token = generateRefreshToken({ id: user._id })
+  const refresh_token = generateRefreshToken({ id: user._id }, res)
 
-  res.cookie("refresh_token", refresh_token, {
-    httpOnly: true,
-    path: `/api/refresh_token`,
-    maxAge: 30 * 24 * 60 * 60 * 1000, //30日
-  })
+  await Users.findOneAndUpdate(
+    { _id: user._id },
+    {
+      rf_token: refresh_token,
+    },
+  )
 
   res.json({
-    msg: "ログインできました！",
+    msg: `${user.name}さん、お帰りなさい！`,
     access_token,
     user: { ...user._doc, password: "" },
   })
@@ -283,19 +306,15 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
 
 const registerUser = async (user: IUserParams, res: Response) => {
   const newUser = new Users(user)
-  await newUser.save()
 
   const access_token = generateAccessToken({ id: newUser._id })
-  const refresh_token = generateRefreshToken({ id: newUser._id })
+  const refresh_token = generateRefreshToken({ id: newUser._id }, res)
 
-  res.cookie("refresh_token", refresh_token, {
-    httpOnly: true,
-    path: `/api/refresh_token`,
-    maxAge: 30 * 24 * 60 * 60 * 1000, //30日
-  })
+  newUser.rf_token = refresh_token
+  await newUser.save()
 
   res.json({
-    msg: "ログインできました！",
+    msg: "ログイン登録が完了しました!",
     access_token,
     user: { ...newUser._doc, password: "" },
   })

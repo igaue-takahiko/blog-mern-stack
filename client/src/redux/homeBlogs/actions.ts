@@ -4,10 +4,14 @@ import { ALERT, IAlertType } from "../alert/types"
 import { GET_HOME_BLOGS, IGetHomeBlogsType } from "./types"
 import { imageUpload } from "../../utils/ImageUpload"
 import { postAPI, getAPI, putAPI } from "../../utils/fetchData"
+import { checkTokenExp } from "../../utils/checkTokenExp"
 
 export const createBlog =
   (blog: IBlog, token: string) => async (dispatch: Dispatch<IAlertType>) => {
-    let url
+    const result = await checkTokenExp(token, dispatch)
+    const access_token = result ? result : token
+
+    let url: string = ""
     try {
       dispatch({ type: ALERT, payload: { loading: true } })
 
@@ -20,7 +24,7 @@ export const createBlog =
 
       const newBlog = { ...blog, thumbnail: url }
 
-      const res = await postAPI("blog", newBlog, token)
+      const res = await postAPI("blog", newBlog, access_token)
 
       dispatch({ type: ALERT, payload: { loading: false } })
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
@@ -46,8 +50,10 @@ export const getHomeBlogs =
 
 export const updateBlog =
   (blog: IBlog, token: string) => async (dispatch: Dispatch<IAlertType>) => {
-    let url
+    const result = await checkTokenExp(token, dispatch)
+    const access_token = result ? result : token
 
+    let url
     try {
       dispatch({ type: ALERT, payload: { loading: true } })
 
@@ -60,7 +66,7 @@ export const updateBlog =
 
       const newBlog = { ...blog, thumbnail: url }
 
-      const res = await putAPI(`blog/${newBlog._id}`, newBlog, token)
+      const res = await putAPI(`blog/${newBlog._id}`, newBlog, access_token)
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {

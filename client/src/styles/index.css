@@ -22,6 +22,9 @@ code {
   border-radius: 50%;
 }
 
+/* ---------- Header Page ------------ */
+@import url("./header.css");
+
 /* ---------- Auth Page ------------ */
 @import url("./auth.css");
 

@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import Categories from "../models/categoryModel"
+import Blogs from "../models/blogModel"
 import { IReqAuth } from "../config/interface"
 
 const categoryCtrl = {
@@ -23,7 +24,8 @@ const categoryCtrl = {
       let errorMessage
 
       if (error.code === 11000) {
-        errorMessage = Object.values(error.keyValue)[0] + "はもう登録してあります。"
+        errorMessage =
+          Object.values(error.keyValue)[0] + "はもう登録してあります。"
       } else {
         let name = Object.keys(error.errors)[0]
         errorMessage = error.errors[`${name}`].message
@@ -52,7 +54,7 @@ const categoryCtrl = {
     try {
       await Categories.findOneAndUpdate(
         { _id: req.params.id },
-        { name: (req.body.name).toLowerCase() },
+        { name: req.body.name.toLowerCase() },
       )
 
       res.json({ msg: "アップデートが完了しました" })
@@ -70,7 +72,17 @@ const categoryCtrl = {
     }
 
     try {
-      await Categories.findByIdAndDelete(req.params.id)
+      const blog = await Blogs.findOne({ category: req.params.id })
+      if (blog) {
+        return res
+          .status(400)
+          .json({ msg: "削除できません！このカテゴリには投稿した記事もあります。" })
+      }
+
+      const category = await Categories.findByIdAndDelete(req.params.id)
+      if (!category) {
+        return res.status(400).json({ msg: "カテゴリは存在しません。" })
+      }
 
       res.json({ msg: "削除が完了しました。" })
     } catch (error: any) {

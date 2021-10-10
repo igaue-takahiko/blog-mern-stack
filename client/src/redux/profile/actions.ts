@@ -6,6 +6,7 @@ import { IGetOtherInfoType, GET_OTHER_INFO } from "./types"
 import { checkImage, imageUpload } from "../../utils/ImageUpload"
 import { patchAPI, getAPI } from "../../utils/fetchData"
 import { checkPassword } from "../../utils/valid"
+import { checkTokenExp } from "../../utils/checkTokenExp"
 
 export const updateUser =
   (avatar: File, name: string, auth: IAuth) =>
@@ -13,6 +14,9 @@ export const updateUser =
     if (!auth.access_token || !auth.user) {
       return
     }
+
+    const result = await checkTokenExp(auth.access_token, dispatch)
+    const access_token = result ? result : auth.access_token
 
     let url: string = ""
     try {
@@ -30,7 +34,7 @@ export const updateUser =
       dispatch({
         type: AUTH,
         payload: {
-          access_token: auth.access_token,
+          access_token,
           user: {
             ...auth.user,
             avatar: url ? url : auth.user.avatar,
@@ -45,7 +49,7 @@ export const updateUser =
           avatar: url ? url : auth.user.avatar,
           name: name ? name : auth.user.name,
         },
-        auth.access_token,
+        access_token,
       )
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
@@ -62,10 +66,13 @@ export const resetPassword =
       return dispatch({ type: ALERT, payload: { errors: message } })
     }
 
+    const result = await checkTokenExp(token, dispatch)
+    const access_token = result ? result : token
+
     try {
       dispatch({ type: ALERT, payload: { loading: true } })
 
-      const res = await patchAPI("reset_password", { password }, token)
+      const res = await patchAPI("reset_password", { password }, access_token)
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {

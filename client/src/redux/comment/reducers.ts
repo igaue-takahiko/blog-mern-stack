@@ -49,7 +49,7 @@ const commentReducer = (
     case commentTypes.DELETE_COMMENT:
       return {
         ...state,
-        data: state.data.filter((item) => item._id === action.payload._id),
+        data: state.data.filter((item) => item._id !== action.payload._id),
       }
     case commentTypes.DELETE_REPLY:
       return {

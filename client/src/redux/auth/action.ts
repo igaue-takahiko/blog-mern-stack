@@ -4,6 +4,7 @@ import { ALERT, IAlertType } from "../alert/types"
 import { postAPI, getAPI } from "../../utils/fetchData"
 import { IUserLogin, IUserRegister } from "../../utils/globalTypes"
 import { validRegister, validPhone } from "../../utils/valid"
+import { checkTokenExp } from "../../utils/checkTokenExp"
 
 export const login =
   (userLogin: IUserLogin) =>
@@ -61,11 +62,18 @@ export const refreshToken =
   }
 
 export const logout =
-  () => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+  (token: string) => async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+    const result = await checkTokenExp(token, dispatch)
+    const access_token = result ? result : token
+
     try {
+      const res = await getAPI("logout", access_token)
+
       localStorage.removeItem("logged")
+
       dispatch({ type: AUTH, payload: {} })
-      await getAPI("logout")
+
+      dispatch({ type: ALERT, payload: { success: res.data.msg } })
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
@@ -99,7 +107,7 @@ export const facebookLogin =
 
       dispatch({ type: ALERT, payload: { success: res.data.msg } })
       localStorage.setItem("logged", "t.i-blog")
-    } catch (error:any) {
+    } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
     }
   }

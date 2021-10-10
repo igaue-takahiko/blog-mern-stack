@@ -1,4 +1,6 @@
 import dotenv from "dotenv"
+dotenv.config()
+
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
@@ -6,7 +8,6 @@ import morgan from "morgan"
 import { Server, Socket } from "socket.io"
 import { createServer } from "http"
 import routes from "./routes"
-dotenv.config()
 
 //middleware
 const app = express()
