@@ -21,8 +21,8 @@ export const Alert: React.FC = () => {
 }
 
 export const showErrorMessage = (msg: string) => {
-  return <div className="errorMsg">{msg}</div>
+  return <div className="errorMsg rounded my-5">{msg}</div>
 }
 export const showSuccessMessage = (msg: string) => {
-  return <div className="successMsg">{msg}</div>
+  return <div className="successMsg rounded my-5">{msg}</div>
 }

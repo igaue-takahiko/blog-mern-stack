@@ -26,7 +26,7 @@ const Login: React.FC = () => {
         {sms ? <LoginSMS /> : <LoginPass />}
         <small className="my-2 row text-primary" style={{ cursor: "pointer" }}>
           <span className="col-md-6">
-            <Link to="/forget_password" className="col-6">
+            <Link to="/forgot_password" className="col-6">
               パスワードを忘れた方はこちら
             </Link>
           </span>

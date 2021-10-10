@@ -1,6 +1,6 @@
 .errorMsg {
   background: rgb(214, 10, 10);
-  color: #fff9;
+  color: #fff;
   text-align: center;
   padding: 16px 0;
   letter-spacing: 1.3px;
@@ -8,7 +8,7 @@
 
 .successMsg {
   background: rgb(9, 158, 54);
-  color: #fff9;
+  color: #fff;
   text-align: center;
   padding: 16px 0;
   letter-spacing: 1.3px;

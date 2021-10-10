@@ -274,6 +274,34 @@ const authCtrl = {
       return res.status(500).json({ msg: error.message })
     }
   },
+  forgotPassword: async (req: Request, res: Response) => {
+    try {
+      const { account } = req.body
+
+      const user = await Users.findOne({ account })
+      if (!user) {
+        return res.status(400).json({ msg: "このアカウントは存在しません。" })
+      }
+
+      const access_token = generateAccessToken({ id: user._id })
+
+      const url = `${CLIENT_URL}/reset_password/${access_token}`
+
+      if (validPhone(account)) {
+        sendSms(account, url, "パスワードをお忘れですか？")
+        return res.json({
+          msg: "再登録が完了しました！お使いの携帯電話を確認してください！",
+        })
+      } else if (validateEmail(account)) {
+        sendMail(account, url, "パスワードをお忘れですか？")
+        return res.json({
+          msg: "再登録が完了しました！お使いのメールアドレスを確認してください！",
+        })
+      }
+    } catch (error: any) {
+      return res.status(500).json({ msg: error.message })
+    }
+  },
 }
 
 const loginUser = async (user: IUser, password: string, res: Response) => {
