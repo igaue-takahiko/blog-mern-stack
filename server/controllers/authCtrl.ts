@@ -283,6 +283,12 @@ const authCtrl = {
         return res.status(400).json({ msg: "このアカウントは存在しません。" })
       }
 
+      if (user.type !== "register") {
+        return res.status(400).json({
+          msg: `${user.type}のクイックログインアカウントはこの機能を使用できません。`,
+        })
+      }
+
       const access_token = generateAccessToken({ id: user._id })
 
       const url = `${CLIENT_URL}/reset_password/${access_token}`
