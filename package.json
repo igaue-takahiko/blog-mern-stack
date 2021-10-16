@@ -12,6 +12,7 @@
     "clientInstall": "npm install --prefix client",
     "install-all": "concurrently \"npm run server-install\" \"npm run client-install\" ",
     "build": "tsc",
+    "heroku-postbuild": "tsc && cd client && npm i --only=dev && npm i && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prettier": {

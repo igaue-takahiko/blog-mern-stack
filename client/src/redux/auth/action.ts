@@ -58,6 +58,7 @@ export const refreshToken =
       dispatch({ type: ALERT, payload: {} })
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.response.data.msg } })
+      localStorage.removeItem("logged")
     }
   }
 

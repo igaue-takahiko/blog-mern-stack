@@ -1,6 +1,6 @@
 import jwt_decode from "jwt-decode"
-import axios from "axios"
 import { AUTH } from "../redux/auth/types"
+import { getAPI } from "./fetchData"
 
 interface IToken {
   exp: number
@@ -15,7 +15,7 @@ export const checkTokenExp = async (token: string, dispatch: any) => {
     return
   }
 
-  const res = await axios.get("/api/refresh_token")
+  const res = await getAPI("/refresh_token")
   dispatch({ type: AUTH, payload: res.data })
 
   return res.data.access_token

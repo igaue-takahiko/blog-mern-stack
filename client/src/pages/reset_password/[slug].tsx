@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { useParams } from "react-router"
+import { useParams, useHistory } from "react-router"
 
 import { IParams, FormSubmit } from "../../utils/globalTypes"
-import { resetPassword } from '../../redux/profile/actions';
+import { resetPassword } from "../../redux/profile/actions"
 
 const ResetPassword: React.FC = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const token = useParams<IParams>().slug
 
   const [password, setPassword] = useState("")
@@ -17,6 +18,8 @@ const ResetPassword: React.FC = () => {
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
     dispatch(resetPassword(password, cf_password, token))
+
+    history.push("/")
   }
 
   return (

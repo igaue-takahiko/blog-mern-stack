@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser"
 import morgan from "morgan"
 import { Server, Socket } from "socket.io"
 import { createServer } from "http"
+import path from "path"
 import routes from "./routes"
 
 //middleware
@@ -31,6 +32,14 @@ app.use("/api", routes)
 
 //Database
 import "./config/database"
+
+//Production Deploy
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"))
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client", "build", "index.html"))
+  })
+}
 
 //server listening
 const PORT = process.env.PORT || 5000
