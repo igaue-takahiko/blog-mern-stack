@@ -20,7 +20,9 @@ export const imageUpload = async (file: File) => {
   formData.append("upload_preset", "t.i-blog-image-db")
   formData.append("cloud_name", "dhst2rbxf")
 
-  const res = await fetch(process.env.REACT_APP_CLOUD_IMAGE_DB_URL, {
+  const CLOUD_IMAGE_DB_URL = "https://api.cloudinary.com/v1_1/dhst2rbxf/upload"
+
+  const res = await fetch(CLOUD_IMAGE_DB_URL, {
     method: "POST",
     body: formData,
   })

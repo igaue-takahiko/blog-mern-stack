@@ -25,14 +25,16 @@ const SocialLogin: React.FC = () => {
     <>
       <div className="my-2">
         <GoogleLogin
-          client_id={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          // client_id={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          client_id="739953059304-fs5okfl1p5vvupft60nerh2ctbktiaes.apps.googleusercontent.com"
           cookiepolicy="single_host_origin"
           onSuccess={onSuccess}
         />
       </div>
       <div className="my-2">
         <FacebookLogin
-          appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+          // appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+          appId="216491753530366"
           onSuccess={onFacebookSuccess}
         />
       </div>
